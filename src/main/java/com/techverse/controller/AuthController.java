@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -163,18 +164,18 @@ public class AuthController {
 	}
 	  /****final****/
     @GetMapping("/generateotp")
-    public ResponseEntity<ApiResponse> generateotphandler(@RequestParam String mobileoremail) {
+    public ResponseEntity<ApiResponse> generateotphandler(@RequestParam String mobileoremail)throws UserException {
    	  	String role="";
-    	System.out.println();
+    	
    	
         ApiResponse response=new ApiResponse();
         response.setJwt("");
 
-        try {
+   
         	Optional<User> isEmailExist=userRepository.findByPhoneNumberOrEmail(mobileoremail,mobileoremail);
-    		
-    		if(!isEmailExist.isPresent()) {
-    			throw new UserException("Email or phone is not registered please registered first");
+    		System.out.println("kfhgjkhfdghkfjh"+isEmailExist.isPresent());
+    		if(!isEmailExist.isPresent()) { 
+    			throw new UsernameNotFoundException("Email or phone is not registered please registered first");
     		}
     		 
     		 String otp=otpService.generateOtpAll(mobileoremail);
@@ -190,11 +191,7 @@ public class AuthController {
              return ResponseEntity.ok(response);
     		 
     		 
-        } catch (Exception e) {
-            response.setStatus(false);
-            response.setMessage("Error occurred while processing your request.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
+         
     } 
     
   
@@ -259,7 +256,7 @@ public class AuthController {
 		}
 		if(!passwordEncoder.matches(password, userDetails.getPassword()))
 		{
-			throw new BadCredentialsException("Invalid Password....");
+			throw new BadCredentialsException("Invalid OTP");
 		}
 		 
 		return new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
