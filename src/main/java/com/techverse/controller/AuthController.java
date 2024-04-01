@@ -102,7 +102,7 @@ public class AuthController {
 		
 		
 	}
-	@GetMapping("/validateotp")
+	@PostMapping("/validateotp")
 	public ResponseEntity<UserSignUpResponse> validateUserHandler(@RequestBody LoginRequest loginRequest)throws UserException
 	{
 		String mobileoremail= loginRequest.getMobileoremail();
@@ -131,7 +131,7 @@ public class AuthController {
 		
 	}
 	
-	@GetMapping("/signin")
+	@PostMapping("/signin")
 	public ResponseEntity<UserSignUpResponse> loginUserHandler(@RequestBody LoginRequest loginRequest)throws UserException
 	{
 		String mobileoremail= loginRequest.getMobileoremail();
