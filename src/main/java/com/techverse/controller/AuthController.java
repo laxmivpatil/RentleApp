@@ -67,7 +67,7 @@ public class AuthController {
 			@RequestPart("aadharNumber") String aadharNumber,
 			@RequestPart("email") String email,
 			@RequestPart("address") String address,
-			@RequestPart("referralCode") String referralCode,
+			@RequestPart(value="referralCode",required=false) String referralCode,
 			@RequestPart("aadharCardImg") MultipartFile aadharCardImg)throws UserException
 	{
 		 

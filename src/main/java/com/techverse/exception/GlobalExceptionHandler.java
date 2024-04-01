@@ -2,6 +2,7 @@ package com.techverse.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,13 @@ public class GlobalExceptionHandler {
      @ExceptionHandler(UsernameNotFoundException.class)
      public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
          // Create a custom error response
+         ErrorResponse errorResponse = new ErrorResponse(false, ex.getMessage());
+         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+     }
+     @ExceptionHandler(BadCredentialsException.class)
+     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
+         // Create a custom error response
+    	 System.out.println(ex);
          ErrorResponse errorResponse = new ErrorResponse(false, ex.getMessage());
          return new ResponseEntity<>(errorResponse, HttpStatus.OK);
      }
