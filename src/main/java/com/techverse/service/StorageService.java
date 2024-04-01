@@ -37,9 +37,11 @@ public class StorageService {
   public String uploadFileOnAzure(MultipartFile file) {
       try {
           // Construct Azure Blob Storage URL
+    	  
           String blobServiceUrl = "https://satyaprofilestorage.blob.core.windows.net";
           String blobContainerUrl = String.format("%s/%s", blobServiceUrl, containerName);
 
+    	  System.out.println("hi i am here");
           // Get the original file extension
           String originalFileName = file.getOriginalFilename();
           String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
@@ -47,6 +49,7 @@ public class StorageService {
           // Generate a unique name using timestamp and UUID
           String uniqueBlobName = Instant.now().toEpochMilli() + "_" + UUID.randomUUID().toString() + fileExtension;
 
+    	  System.out.println("hi i am here");
           // Create BlobClient with connection string
           BlobClientBuilder blobClientBuilder = new BlobClientBuilder().connectionString(container_string)
                   .containerName(containerName).blobName(uniqueBlobName);
@@ -66,7 +69,7 @@ public class StorageService {
 
           // Set the start time for the SAS token (optional)
           OffsetDateTime startTime = OffsetDateTime.now().minusMinutes(5);
-
+          System.out.println("hi i am here");
           BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues(expiryTime, sasPermission)
                   .setStartTime(startTime);
 

@@ -39,7 +39,8 @@ public class UserServiceImplementation implements UserService {
 			// For example, you can save the file to a specific directory or cloud storage.
 			// Update admin's profile photo URL in the database accordingly.
 			// admin.setProfilePhotoUrl(savedProfilePhotoUrl);
-			 path=storageService.uploadFileOnAzure(aadharCardImg);
+			System.out.println("hi "+aadharCardImg);
+			// path=storageService.uploadFileOnAzure(aadharCardImg);
 
 		}
 		User individual = new User(fullName, phoneNumber, aadharNumber, email, address, referralCode, path,otp);
