@@ -1,5 +1,6 @@
 package com.techverse.controller;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -69,13 +70,13 @@ public class AuthController {
 			@RequestPart("email") String email,
 			@RequestPart("address") String address,
 			@RequestPart(value="referralCode",required=false) String referralCode,
-			@RequestPart("aadharCardImg") MultipartFile aadharCardImg)throws UserException
+			@RequestPart("aadharCardImg") MultipartFile aadharCardImg)throws UserException,IOException
 	{
 		 
 		
-		Optional<User> isEmailExist=userRepository.findByPhoneNumberOrEmail(email,phoneNumber);
-		
-		if(isEmailExist.isPresent()) {
+		Optional<User> isEmailExist=userRepository.findByEmailu(email);
+		Optional<User> isphoneExist=userRepository.findByPhoneNumber(phoneNumber);
+		if(isEmailExist.isPresent()||isphoneExist.isPresent()) {
 			throw new UserException("Email or phone is Allready Used with Another Account");
 		}
 		ApiResponse response=new ApiResponse();

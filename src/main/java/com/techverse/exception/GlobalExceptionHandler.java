@@ -1,5 +1,7 @@
 package com.techverse.exception;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +21,13 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(false, ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
-
+     @ExceptionHandler(IOException.class)
+     public ResponseEntity<Object> handleIO(IOException ex) {
+         // Create a custom error response
+     	 System.out.println(ex.getMessage());
+         ErrorResponse errorResponse = new ErrorResponse(false, "file storage error");
+         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+     }
      
      
      
@@ -40,10 +48,10 @@ public class GlobalExceptionHandler {
     // Add more @ExceptionHandler methods for other custom exceptions
 
     // Generic exception handler
-    @ExceptionHandler(Exception.class)
+   /* @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {
         // Create a generic error response
-        ErrorResponse errorResponse = new ErrorResponse(false, "Internal Server Error");
+        ErrorResponse errorResponse = new ErrorResponse(false, "Internal Server Error123");
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 }

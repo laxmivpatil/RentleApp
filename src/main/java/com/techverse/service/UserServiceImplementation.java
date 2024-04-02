@@ -1,5 +1,7 @@
 package com.techverse.service;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +32,7 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public User createUser(String fullName, String phoneNumber, String aadharNumber, String email, String address,
-			String referralCode, MultipartFile aadharCardImg,String otp) {
+			String referralCode, MultipartFile aadharCardImg,String otp) throws IOException{
 		String path = "";
 		// Add validation logic, password hashing, etc.
 
@@ -40,7 +42,7 @@ public class UserServiceImplementation implements UserService {
 			// Update admin's profile photo URL in the database accordingly.
 			// admin.setProfilePhotoUrl(savedProfilePhotoUrl);
 			System.out.println("hi "+aadharCardImg);
-			// path=storageService.uploadFileOnAzure(aadharCardImg);
+			  path=storageService.uploadFileOnAzure(aadharCardImg);
 
 		}
 		User individual = new User(fullName, phoneNumber, aadharNumber, email, address, referralCode, path,otp);
