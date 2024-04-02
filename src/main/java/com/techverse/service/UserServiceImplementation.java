@@ -42,7 +42,7 @@ public class UserServiceImplementation implements UserService {
 			// Update admin's profile photo URL in the database accordingly.
 			// admin.setProfilePhotoUrl(savedProfilePhotoUrl);
 			System.out.println("hi "+aadharCardImg);
-			  path=storageService.uploadFileOnAzure(aadharCardImg);
+			//  path=storageService.uploadFileOnAzure(aadharCardImg);
 
 		}
 		User individual = new User(fullName, phoneNumber, aadharNumber, email, address, referralCode, path,otp);
