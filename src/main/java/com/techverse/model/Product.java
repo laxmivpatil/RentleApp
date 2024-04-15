@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Product {
     @Id
@@ -50,7 +52,7 @@ public class Product {
     private double depth;
     
     
-    
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

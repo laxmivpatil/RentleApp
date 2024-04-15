@@ -8,12 +8,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.techverse.config.JwtProvider;
 import com.techverse.exception.UserException;
+import com.techverse.model.Category;
 import com.techverse.model.Product;
 import com.techverse.model.User;
 import com.techverse.service.ProductService;
 import com.techverse.service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -27,7 +30,7 @@ public class ProductController {
     private UserService userService;
     
     @PostMapping("/add")
-    public Product addProduct(@RequestHeader("Authorization") String authorizationHeader,    		
+    public Map<String, Object> addProduct(@RequestHeader("Authorization") String authorizationHeader,    		
     		@RequestPart(required = false) String title,
     		@RequestPart(required = false) String serialNo,
     		@RequestPart(required = false) String description,
@@ -61,13 +64,22 @@ public class ProductController {
     	
     	User user=userService.findUserProfileByJwt(authorizationHeader);
     	System.out.println(user.getEmail());
-    	return null;
-      /*  return productService.addProduct(productImage1,productImage2,productImage3,productImage4,productImage5,
+    	
+    	Product p= productService.addProduct(productImage1,productImage2,productImage3,productImage4,productImage5,
         		title, serialNo, description, category, subcategory,
-                houseNumber, streetNumber, address, pincode, refundableSecurityDeposit, daily,
-                monthly, yearly, dailyPrice, monthlyPrice, yearlyPrice, quantity, availableFrom,
-                weight, height, width, depth, user);
-                */
+                houseNumber, streetNumber, address, pincode, Double.parseDouble(refundableSecurityDeposit), Boolean.parseBoolean(daily),
+                Boolean.parseBoolean(monthly),Boolean.parseBoolean(yearly), Long.parseLong(dailyPrice), Long.parseLong(monthlyPrice),Long.parseLong(yearlyPrice), Integer.parseInt( quantity), availableFrom,
+                Double.parseDouble(weight), Double.parseDouble(height),Double.parseDouble(width), Double.parseDouble(depth), user);
+    	Map<String,Object> response = new HashMap<>();
+        response.put("product", p);
+
+        response.put("status", true);
+        response.put("message", "product added Successfully");
+        return response;
+        
+        
+   
+                 
     }
     
      
