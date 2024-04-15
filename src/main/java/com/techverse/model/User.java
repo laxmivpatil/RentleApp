@@ -10,16 +10,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -41,6 +32,11 @@ public class User {
 	 
 	 
 	 private String role;
+	 
+	 
+	 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	 @JsonIgnore
+	    private List<Product> products = new ArrayList<>();
 
 	 
 	 
@@ -169,6 +165,22 @@ public class User {
 		this.role = role;
 	}
 	
+	
+	
+	
+	
+	public List<Product> getProducts() {
+		return products;
+	}
+
+
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+
+
 	public User(String fullName, String phoneNumber, String aadharNumber, String email,
 			String address, String referralCode, String aadharCardImg,String otp) {
 		super();

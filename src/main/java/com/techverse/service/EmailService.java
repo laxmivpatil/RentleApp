@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.techverse.model.OtpEntity;
 import com.techverse.repository.OtpRepository;
- 
-import java.util.Properties;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;

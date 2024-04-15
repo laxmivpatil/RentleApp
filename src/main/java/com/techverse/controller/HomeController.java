@@ -30,7 +30,8 @@ public class HomeController {
 	@GetMapping("/")
 	public String home(@RequestPart("aadharCardImg") MultipartFile aadharCardImg)
 	{ 
-		String path=storageService.uploadFileOnAzure(aadharCardImg);
+		 String path=storageService.uploadFileOnAzure(aadharCardImg);
+		 
 		return "Welcome "+path;
 		
  	

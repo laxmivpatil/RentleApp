@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.4</version>
+		<version>2.7.17</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.techverse.rentle</groupId>
@@ -17,75 +17,16 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-	<dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        
-    </dependency>
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        
-    </dependency>
+	 
 
+ 
 
-<dependency>
-    <groupId>commons-fileupload</groupId>
-    <artifactId>commons-fileupload</artifactId>
-    <version>1.4</version> <!-- Use the latest version available -->
-</dependency>
-			 <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-test</artifactId>
-    <version>6.1.5</version> <!-- Use the version compatible with your Spring Boot version -->
-    <scope>test</scope>
-</dependency>
-	<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.15.0</version> <!-- Use the latest version -->
-</dependency>
-		  <!-- Apache POI -->
-    <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi</artifactId>
-        <version>4.1.2</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi-ooxml</artifactId>
-        <version>4.1.2</version>
-    </dependency>
-		<dependency>
-    <groupId>org.apache.tika</groupId>
-    <artifactId>tika-core</artifactId>
-    <version>1.27</version> <!-- Use the latest version available -->
-</dependency>
-		<dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-crypto</artifactId>
-    <version>5.6.1</version>
-</dependency>
-<dependency>
-    <groupId>com.amazonaws</groupId>
-    <artifactId>aws-java-sdk-s3</artifactId>
-    <version>1.12.561</version>
-</dependency>
-
-		<dependency>
-    <groupId>com.google.auth</groupId>
-    <artifactId>google-auth-library-oauth2-http</artifactId>
-    <version>1.13.0</version> <!-- Use the latest version available -->
-</dependency>	 
-
+ 
+	 
 
 
  
-	<dependency>
-    <groupId>software.amazon.awssdk</groupId>
-    <artifactId>s3</artifactId>
-    <version>2.17.100</version>
-</dependency>
+	 
 
  <!-- JSON Web Token (JWT) -->
     <dependency>
@@ -105,25 +46,9 @@
         <version>0.11.2</version>
         <scope>runtime</scope>
     </dependency>
-				<dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>3.13.0</version>
-    </dependency>
+		 
     
-   
- <dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>31.1-jre</version>
-</dependency>
-<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency> 
-
-
+ 
     <!-- Apache Commons Validator -->
     <dependency>
         <groupId>commons-validator</groupId>
@@ -131,27 +56,7 @@
         <version>1.7</version>
     </dependency>
 <!-- sms dependency-->
-<dependency>
-    <groupId>com.twilio.sdk</groupId>
-    <artifactId>twilio</artifactId>
-    <version>8.16.0</version>
-</dependency>
-<dependency>
-    <groupId>com.plivo</groupId>
-    <artifactId>plivo-java</artifactId>
-   <version>5.9.3</version>
-</dependency>
-
-	<dependency> 
-    <groupId>org.springframework.boot</groupId> 
-    <artifactId>spring-boot-starter-validation</artifactId> 
-</dependency>
-	
-            <dependency>
-                <groupId>com.sun.mail</groupId>
-                <artifactId>javax.mail</artifactId>
-                <version>1.6.2</version>
-            </dependency>
+ 
        <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-mail</artifactId>
@@ -188,33 +93,6 @@
         <version>1.10.0</version> <!-- Use the version compatible with your project -->
     </dependency>
  
-<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
-<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
-<!-- Use the latest version of google-api-client -->
-<dependency>
-    <groupId>com.google.api-client</groupId>
-    <artifactId>google-api-client</artifactId>
-    <version>1.31.1</version> <!-- Use the latest version available -->
-</dependency>
-
-<dependency>
-    <groupId>com.google.apis</groupId>
-    <artifactId>google-api-services-sqladmin</artifactId>
-    <version>v1beta4-rev20230111-2.0.0</version> <!-- Use the latest version available -->
-</dependency>
-<dependency>
-    <groupId>com.google.cloud</groupId>
-    <artifactId>google-cloud-storage</artifactId>
-    <version>1.12.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
-<dependency>
-    <groupId>com.google.cloud</groupId>
-    <artifactId>google-cloud-core</artifactId>
-    <version>1.12.0</version>
-</dependency>
-
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -226,43 +104,191 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-	
-      <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.15.0</version>
-</dependency>
+		 
+   	<dependency>
+    
  
-
-<dependency>
+  
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
-		<dependency>
-<groupId>com.squareup.okhttp</groupId>
-<artifactId>okhttp</artifactId>
-<version>2.7.5</version>
-</dependency>
+	 
 	 
 <!--jwt token dependency end	-->		
 
-<!-- https://mvnrepository.com/artifact/com.razorpay/razorpay-java -->
-<dependency>
-    <groupId>com.razorpay</groupId>
-    <artifactId>razorpay-java</artifactId>
-    <version>1.4.5</version>
-</dependency>
+ 
  
 <dependency>
 	<groupId>org.springframework.security</groupId>
 <artifactId>spring-security-config</artifactId>
 </dependency>
+ 
+ 
+ <dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.6.2</version>
+</dependency>
+
+ 
+ 
+ 
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob</artifactId>
+    <version>12.15.0</version>
+   
+</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+    <version>2.13.5</version> <!-- Use the version compatible with your Jackson version -->
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>4.1.2</version> <!-- Use the latest version available -->
+</dependency>
+
+
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.0.0</version> <!-- Use the latest version available -->
+</dependency>
+
+
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.4.0</version> <!-- Use the latest version -->
+</dependency>
+ <!-- https://mvnrepository.com/artifact/org.jcodec/jcodec -->
+<!-- https://mvnrepository.com/artifact/com.github.bumptech.glide/glide -->
+ 
+
+    <!-- FFmpeg (required by JavaCV for video processing) -->
+    
+ 
+
+<!-- https://mvnrepository.com/artifact/org.jcodec/jcodec -->
+ <dependency>
+	<groupId>org.jcodec</groupId>
+	<artifactId>jcodec</artifactId>
+	<version>0.2.5</version>
+</dependency>
+<dependency>
+    <groupId>net.coobird</groupId>
+    <artifactId>thumbnailator</artifactId>
+    <version>0.4.14</version> <!-- Replace with the latest version -->
+</dependency>
+
+<dependency>
+	<groupId>org.jcodec</groupId>
+	<artifactId>jcodec-javase</artifactId>
+	<version>0.2.5</version>
+</dependency>
+ 
+		<dependency>
+    <groupId>com.squareup.okhttp3</groupId>
+    <artifactId>okhttp</artifactId>
+    <version>3.14.9</version> <!-- Use the latest version available -->
+</dependency>
+		<dependency>
+    <groupId>com.konghq</groupId>
+    <artifactId>unirest-java</artifactId>
+    <version>3.11.10</version> <!-- Use the latest version from Maven Central -->
+</dependency>
+<!-- Apache HttpClient dependency -->
+ 
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+<dependency>
+    <groupId>com.google.firebase</groupId>
+    <artifactId>firebase-admin</artifactId>
+    <version>9.1.1</version>
+</dependency>
+  <!-- https://mvnrepository.com/artifact/io.agora.rtm/rtm-sdk -->
+		<!-- Exclude conflicting dependencies -->
+	 <!-- https://mvnrepository.com/artifact/org.bytedeco/ffmpeg -->
+<dependency>
+    <groupId>org.bytedeco</groupId>
+    <artifactId>ffmpeg</artifactId>
+    <version>6.0-1.5.9</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.bytedeco/javacv -->
+<dependency>
+    <groupId>org.bytedeco</groupId>
+    <artifactId>javacv</artifactId>
+    <version>1.5.9</version>
+</dependency>
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>1.4</version>
+</dependency>
+		
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.69.Final</version>
+		</dependency>
+		<dependency>
+    <groupId>com.twilio.sdk</groupId>
+    <artifactId>twilio</artifactId>
+    <version>8.16.0</version>
+</dependency> 
+
+ 
+ 
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.9.1</version>
+</dependency>
+		 
+ 
+ 
+
+<!--for jwt token   -->
+ <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+ 
+ 
+		 
+     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+ 
+ 	<dependency>
+    <groupId>com.google.auth</groupId>
+    <artifactId>google-auth-library-oauth2-http</artifactId>
+    <version>1.13.0</version> <!-- Use the latest version available -->
+</dependency>	 
+
+
+            
+       
+ 
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter -->
+ 
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <scope>runtime</scope>
+</dependency>
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-tomcat</artifactId>
+</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		 
+
+ 
+ 
+ 
  
 	</dependencies>
 

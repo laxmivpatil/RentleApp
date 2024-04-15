@@ -2,10 +2,7 @@ package com.techverse.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
- 
+import javax.persistence.*;
 
 @Entity
 public class OtpEntity {

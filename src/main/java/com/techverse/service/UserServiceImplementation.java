@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.techverse.config.JwtProvider;
 import com.techverse.exception.UserException;
 import com.techverse.model.User;
 import com.techverse.repository.UserRepository;
@@ -17,6 +18,10 @@ public class UserServiceImplementation implements UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private StorageService storageService;
+	 
+	  
+    @Autowired
+    private JwtProvider jwtProvider; 
 
 	@Override
 	public User findUserById(Long userId) throws UserException {
@@ -26,8 +31,13 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public User findUserProfileByJwt(String jwt) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+
+		System.out.println("jkdhfjdshjg");
+		String EmailorPhone=jwtProvider.getEmailfromToken(jwt);
+		
+		System.out.println(EmailorPhone);
+		
+		return userRepository.findByPhoneNumberOrEmail(EmailorPhone, EmailorPhone).get();
 	}
 
 	@Override

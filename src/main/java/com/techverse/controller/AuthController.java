@@ -26,22 +26,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.techverse.config.JwtProvider;
 import com.techverse.exception.UserException;
-import com.techverse.model.OtpVerificationResult;
 import com.techverse.model.User;
 import com.techverse.repository.UserRepository;
 import com.techverse.request.LoginRequest;
 import com.techverse.response.ApiResponse;
-import com.techverse.response.AuthResponse;
 import com.techverse.response.UserSignUpResponse;
 import com.techverse.service.CustomUserServiceImplementation;
 import com.techverse.service.EmailService;
 import com.techverse.service.OtpService;
-import com.techverse.service.UserService;
-
+import com.techverse.service.UserService; 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	
+ 
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired

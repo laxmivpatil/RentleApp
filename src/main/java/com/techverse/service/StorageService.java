@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -21,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StorageService {
 
-	  @Value("${azure.storage.account-name}")
+	  @Value("${azure.storage.accountName}")
 	    private String storageAccountName;
 
 	    @Value("${azure.storage.container-string}")
@@ -84,51 +85,54 @@ public class StorageService {
 		 */
 	    
 	    
-	    public String uploadFileOnAzure(MultipartFile file)  {
-	        // Construct Azure Blob Storage URL
-	        String blobServiceUrl = "https://satyaprofilestorage.blob.core.windows.net";
-	        String blobContainerUrl = String.format("%s/%s", blobServiceUrl, containerName);
+	 
+	    public String uploadFileOnAzure(MultipartFile file) {
+	        try {
+	            // Construct Azure Blob Storage URL
+	            String blobServiceUrl = "https://satyaprofilestorage.blob.core.windows.net";
+	            String blobContainerUrl = String.format("%s/%s", blobServiceUrl, containerName);
 
-	        // Get the original file extension
-	        String originalFileName = file.getOriginalFilename();
-	        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+	            // Get the original file extension
+	            String originalFileName = file.getOriginalFilename();
+	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
 
-	        // Generate a unique name using timestamp and UUID
-	        String uniqueBlobName = Instant.now().toEpochMilli() + "_" + UUID.randomUUID().toString() + fileExtension;
+	            // Generate a unique name using timestamp and UUID
+	            String uniqueBlobName = Instant.now().toEpochMilli() + "_" + UUID.randomUUID().toString() + fileExtension;
 
-	        // Create BlobClient with connection string
-	        BlobClientBuilder blobClientBuilder = new BlobClientBuilder().connectionString(container_string)
-	                .containerName(containerName).blobName(uniqueBlobName);
+	            // Create BlobClient with connection string
+	            BlobClientBuilder blobClientBuilder = new BlobClientBuilder().connectionString(container_string)
+	                    .containerName(containerName).blobName(uniqueBlobName);
 
-	        // Upload the file to Azure Blob Storage with the unique blob name
-	        try (InputStream inputStream = file.getInputStream()) {
-	            blobClientBuilder.buildClient().upload(inputStream, file.getSize(), true);
+	            // Upload the file to Azure Blob Storage with the unique blob name
+	            try (InputStream inputStream = file.getInputStream()) {
+	                blobClientBuilder.buildClient().upload(inputStream, file.getSize(), true);
+	            }
+
+	            // Create a SAS token that's valid for 1 hour (adjust duration as needed)
+	            // Create a SAS token without expiration time
+	            OffsetDateTime expiryTime = OffsetDateTime.of(2099, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+	            
+	            // Assign read permissions to the SAS token
+	            BlobSasPermission sasPermission = new BlobSasPermission().setReadPermission(true);
+
+	            // Set the start time for the SAS token (optional)
+	            OffsetDateTime startTime = OffsetDateTime.now().minusMinutes(5);
+
+	            BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues(expiryTime, sasPermission)
+	                    .setStartTime(startTime);
+
+	            // Generate SAS token for the blob
+	            String sasToken = blobClientBuilder.buildClient().generateSas(sasSignatureValues);
+
+	            // Return the URL of the uploaded file with the SAS token
+	            String fileUrlWithSas = String.format("%s/%s?%s", blobContainerUrl, uniqueBlobName, sasToken);
+	            return fileUrlWithSas;
 	        } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-	        // Create a SAS token that's valid for 1 hour (adjust duration as needed)
-	        OffsetDateTime expiryTime = OffsetDateTime.of(2099, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-
-	        // Assign read permissions to the SAS token
-	        BlobSasPermission sasPermission = new BlobSasPermission().setReadPermission(true);
-
-	        // Set the start time for the SAS token (optional)
-	        OffsetDateTime startTime = OffsetDateTime.now().minusMinutes(5);
-
-	        BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues(expiryTime, sasPermission)
-	                .setStartTime(startTime);
-
-	        // Generate SAS token for the blob
-	        String sasToken = blobClientBuilder.buildClient().generateSas(sasSignatureValues);
-
-	        // Return the URL of the uploaded file with the SAS token
-	        String fileUrlWithSas = String.format("%s/%s?%s", blobContainerUrl, uniqueBlobName, sasToken);
-	        return fileUrlWithSas;
+	            e.printStackTrace();
+	            return null;
+	        }
 	    }
 
-	
-  
 }
 
