@@ -1,6 +1,7 @@
 package com.techverse.service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,14 @@ public class UserServiceImplementation implements UserService {
 	}
 
 	@Override
-	public User findUserProfileByJwt(String jwt) throws UserException {
+	public Optional<User> findUserProfileByJwt(String jwt) throws UserException {
 
 		System.out.println("jkdhfjdshjg");
 		String EmailorPhone=jwtProvider.getEmailfromToken(jwt);
 		
 		System.out.println(EmailorPhone);
 		
-		return userRepository.findByPhoneNumberOrEmail(EmailorPhone, EmailorPhone).get();
+		return userRepository.findByPhoneNumberOrEmail(EmailorPhone, EmailorPhone);
 	}
 
 	@Override

@@ -47,12 +47,23 @@ public class HomeController {
 	@GetMapping("/api/user/getbytoken")
 	public Map<String, Object> getuser(@RequestHeader("Authorization") String authorizationHeader) throws UserException
 	{ 
-		 User user=userService.findUserProfileByJwt(authorizationHeader);
-		 Map<String,Object> response = new HashMap<>();
-	        response.put("user", user);
+		 Optional<User> user=userService.findUserProfileByJwt(authorizationHeader);
 
-	        response.put("status", true); 
-	        return response;
+		 Map<String,Object> response = new HashMap<>();
+		 if(user.isPresent()) {
+			 response.put("user", user);
+
+		        response.put("status", true); 
+		        return response;
+		 }
+		 else
+		 {
+			 response.put("status", false); 
+
+		        response.put("message","user not found");
+		        return response;
+		 }
+	       
  	
 	}
 	
@@ -66,7 +77,7 @@ public class HomeController {
 		 
 	    { 
 		 
-		 User user=userService.findUserProfileByJwt(authorizationHeader);
+		 User user=userService.findUserProfileByJwt(authorizationHeader).get();
 		 	 user.setFullName(fullName);
 		 
 		  

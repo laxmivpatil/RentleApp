@@ -62,7 +62,7 @@ public class ProductController {
     	
     System.out.println("hiiii"+authorizationHeader);
     	
-    	User user=userService.findUserProfileByJwt(authorizationHeader);
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
     	System.out.println(user.getEmail());
     	
     	Product p= productService.addProduct(productImage1,productImage2,productImage3,productImage4,productImage5,

@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleUserException(UserException ex) {
         // Create a custom error response
     	 System.out.println(ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(false, ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(false, "user not found");
         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
      @ExceptionHandler(IOException.class)
