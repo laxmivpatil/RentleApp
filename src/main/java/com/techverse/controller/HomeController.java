@@ -80,12 +80,19 @@ public class HomeController {
 			user.setProfile(storageService.uploadFileOnAzure(profile));
 			 }
 			 
-			 
+			String mobileoremail= jwtProvider.getEmailfromToken(authorizationHeader);
+			String token="";
+			if(mobileoremail.matches("^\\d{10}$")) {
+				token=jwtProvider.generateToken1(phoneNumber);
+			}
+			else {
+				token=jwtProvider.generateToken1(email);
+			}
 		 
 		 userRepository.save(user);
 		 Map<String,Object> response = new HashMap<>();
 	        response.put("updateduser", user);
-
+	        response.put("token", token);
 	        response.put("status", true);
 	        response.put("message", "user updated successfully");
 	        return response;

@@ -30,6 +30,17 @@ public class JwtProvider {
 				
 		return jwt;
 	}
+	public String generateToken1(String emailorphone)
+	{
+		String jwt=Jwts.builder()
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(new Date().getTime()+846000000))
+				.claim("email", emailorphone)
+				.signWith(key).compact();
+
+				
+		return jwt;
+	}
 	
 	public String getEmailfromToken(String jwt) {
 		jwt=jwt.substring(7);
