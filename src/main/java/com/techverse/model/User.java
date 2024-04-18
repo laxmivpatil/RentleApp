@@ -27,6 +27,7 @@ public class User {
 	 private String referralCode; // optional
 	 private String aadharCardImg;
 	 private Date createdDate;
+	 private String profile="";
 	 
 	 private String deviceToken="";
 	 
@@ -40,7 +41,19 @@ public class User {
 
 	 
 	 
-	 public User() {
+	 public String getProfile() {
+		return profile;
+	}
+
+
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
+
+
+	public User() {
 		 // TODO Auto-generated constructor stub
 	 }	 
 	 
