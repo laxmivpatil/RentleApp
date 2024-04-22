@@ -81,7 +81,68 @@ public class ProductController {
    
                  
     }
-    
+   
      
+    @DeleteMapping("/delete/{productId}")
+    public Map<String, Object> deleteProduct(@RequestHeader("Authorization") String authorizationHeader,    		
+    		@PathVariable Long productId ) throws UserException  {
+    	
+    	
+    System.out.println("hiiii"+authorizationHeader);
+    	
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+
+    	Map<String,Object> response = new HashMap<>();
+    	 boolean deleted = productService.deleteProduct(productId);
+    	    if (deleted) {
+    	    	response.put("status", true);
+    	        response.put("message", "product deleted Successfully");
+    	         
+    	    } else {
+    	    	response.put("status", false);
+    	        response.put("message", "Product not found");
+    	         
+    	    }
+    	
+    	
+    	
+    	System.out.println(user.getEmail());
+    	 
+        
+        return response;
+        
+        
+   
+                 
+    }
     
+    
+    @PutMapping("/status/{id}")
+    public Map<String, Object> changeProductStatus(@RequestHeader("Authorization") String authorizationHeader,@PathVariable Long id)throws UserException   {
+        User user=userService.findUserProfileByJwt(authorizationHeader).get();
+
+    	Map<String,Object> response = new HashMap<>();
+    	 boolean statusChanged = productService.changeProductStatus(id);
+         
+             if ( statusChanged ) {
+    	    	response.put("status", true);
+    	        response.put("message", "Product status changed successfully");
+    	         
+    	    } else {
+    	    	response.put("status", false);
+    	        response.put("message", "Product not found");
+    	         
+    	    }
+    	
+    	
+    	
+    	System.out.println(user.getEmail());
+    	 
+        
+        return response;
+        
+        
+        
+         
+    }
 }

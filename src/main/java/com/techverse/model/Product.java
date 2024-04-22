@@ -16,6 +16,7 @@ public class Product {
     private String serialNo;
     private String description;
      
+    private boolean active=true;
     private String category;
 
     
@@ -67,6 +68,20 @@ public class Product {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+
+ 
+
+
+	public boolean isActive() {
+		return active;
+	}
+
+
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 

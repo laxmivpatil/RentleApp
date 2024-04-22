@@ -80,8 +80,27 @@ public class ProductService {
         product.setWidth(width);
         product.setDepth(depth);
         product.setUser(user);
+        product.setActive(true);
 
         return productRepository.save(product);
     }
     
+    
+    public boolean deleteProduct(Long id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+    public boolean changeProductStatus(Long id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setActive(!product.isActive()); // Toggle status (active to inactive, inactive to active)
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
 }

@@ -59,9 +59,8 @@ public class HomeController {
 		 else
 		 {
 			 response.put("status", false); 
-
-		        response.put("message","user not found");
-		        return response;
+			 response.put("message","user not found");
+		     return response;
 		 }
 	       
  	
@@ -78,19 +77,13 @@ public class HomeController {
 	    { 
 		 
 		 User user=userService.findUserProfileByJwt(authorizationHeader).get();
-		 	 user.setFullName(fullName);
-		 
-		  
-			 user.setMobileNumber(phoneNumber);
-		 
-		  
-			 user.setEmail(email);
-		  
-			 user.setAddress(address);
-			 if(profile!=null && !profile.isEmpty()) {
-			user.setProfile(storageService.uploadFileOnAzure(profile));
-			 }
-			 
+		 user.setFullName(fullName);
+		 user.setMobileNumber(phoneNumber);
+		 user.setEmail(email);
+		 user.setAddress(address);
+		 if(profile!=null && !profile.isEmpty()) {
+		user.setProfile(storageService.uploadFileOnAzure(profile));
+		 }
 			String mobileoremail= jwtProvider.getEmailfromToken(authorizationHeader);
 			String token="";
 			if(mobileoremail.matches("^\\d{10}$")) {
