@@ -1,6 +1,9 @@
 package com.techverse.model;
  
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +60,27 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_id")
+    private List<ImagePath> imagePaths = new ArrayList<>();
+    
+    
+    
+    
+
+    public List<ImagePath> getImagePaths() {
+        return imagePaths;
+    }
+
+    public void setImagePaths(List<ImagePath> imagePaths) {
+        this.imagePaths = imagePaths;
+    }
+
+    public void addImagePath(String path) {
+        ImagePath imagePath = new ImagePath();
+        imagePath.setPath(path);
+        this.imagePaths.add(imagePath);
+    }
 
 
 	public Long getId() {

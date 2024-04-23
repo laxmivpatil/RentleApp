@@ -8,6 +8,7 @@ import com.techverse.model.Product;
 import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,30 +32,39 @@ public class ProductService {
                               double weight, double height, double width, double depth,
                               User user) {
         Product product = new Product();
-        // Set all the product details
-        
+        // Set all the product details 
         if(p1 != null && !p1.isEmpty()) {
-        	product.setProductImage1(storageService.uploadFileOnAzure(p1));
+        	String imagePath1=storageService.uploadFileOnAzure(p1);
+        	product.setProductImage1(imagePath1);
+        	 
+        	product.addImagePath(imagePath1);
         	
         }
         
         
         if(p2 != null && !p2.isEmpty()) {
-        	product.setProductImage2(storageService.uploadFileOnAzure(p2));
+        	String imagePath2=storageService.uploadFileOnAzure(p2);
+        	product.setProductImage2(imagePath2);
+        	product.addImagePath(imagePath2);
         	
         }
         
         if(p3 != null && !p3.isEmpty()) {
-        	product.setProductImage3(storageService.uploadFileOnAzure(p3));
+        	String imagePath3=storageService.uploadFileOnAzure(p3);
+        	product.setProductImage3(imagePath3);
+        	product.addImagePath(imagePath3);
         	
         }
         if(p4 != null && !p4.isEmpty()) {
-        	product.setProductImage4(storageService.uploadFileOnAzure(p4));
+        String imagePath4=storageService.uploadFileOnAzure(p4);
+    	product.setProductImage4(imagePath4);
+    	product.addImagePath(imagePath4);
         	
         }
         if(p5 != null && !p5.isEmpty()) {
-        	product.setProductImage1(storageService.uploadFileOnAzure(p5));
-        	
+        	String imagePath5=storageService.uploadFileOnAzure(p5);
+        	product.setProductImage5(imagePath5);
+        	product.addImagePath(imagePath5);
         }
         
         product.setTitle(title);
