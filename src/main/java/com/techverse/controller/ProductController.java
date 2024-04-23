@@ -1,12 +1,11 @@
 package com.techverse.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+ 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.techverse.config.JwtProvider;
+ 
 import com.techverse.exception.UserException;
 import com.techverse.model.Category;
 import com.techverse.model.Product;
