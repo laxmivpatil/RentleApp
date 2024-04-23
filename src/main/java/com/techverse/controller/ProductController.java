@@ -75,13 +75,58 @@ public class ProductController {
         response.put("status", true);
         response.put("message", "product added Successfully");
         return response;
-        
-        
-   
-                 
+      }
+    
+    
+  /*  @GetMapping("/all")
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
-   
-     
+    */
+    
+    @GetMapping("/all")
+    public Map<String, Object> getAllActiveProductsOfOtherUsers(@RequestHeader("Authorization") String authorizationHeader)  throws UserException  {
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+    	 
+    	
+    	
+    	Map<String,Object> response = new HashMap<>();
+        response.put("products", productService.getAllActiveProductsOfOtherUsers(user.getId()));
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+    }
+    
+    @GetMapping("/byproductid/{productId}")
+    public Map<String, Object> getProductDetailsWithUser(@PathVariable Long productId) {
+        
+    	Product p=productService.getProductDetailsWithUser(productId);
+        
+        
+        Map<String,Object> response = new HashMap<>();
+        response.put("product", p);
+        response.put("user", p.getUser());
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+    }
+    
+    @GetMapping("/byuserid")
+    public Map<String, Object> getProductsByUserId(@RequestHeader("Authorization") String authorizationHeader)  throws UserException {
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+       
+        Map<String,Object> response = new HashMap<>();
+        response.put("product", productService.getProductsByUserId(user.getId()));
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+        
+        
+        
+    }
     @DeleteMapping("/delete/{productId}")
     public Map<String, Object> deleteProduct(@RequestHeader("Authorization") String authorizationHeader,    		
     		@PathVariable Long productId ) throws UserException  {

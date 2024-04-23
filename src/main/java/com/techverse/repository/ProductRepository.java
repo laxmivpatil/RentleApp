@@ -15,4 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
   //  List<Product> findByUser(User user);
     // Other custom query methods
+	  List<Product> findByUserId(Long userId);
+	  
+	  
+	  List<Product> findAllByUserIdNotAndActiveTrue(Long userId);
 }

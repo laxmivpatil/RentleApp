@@ -84,7 +84,29 @@ public class ProductService {
 
         return productRepository.save(product);
     }
+    public List<Product> getProductsByUserId(Long userId) {
+        return productRepository.findByUserId(userId);
+    }
     
+    public List<Product> getAllActiveProductsOfOtherUsers(Long userId) {
+        return productRepository.findAllByUserIdNotAndActiveTrue(userId);
+    }
+    
+    
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+    
+    public Product getProductDetailsWithUser(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            // Fetch user details associated with the product
+            
+            return product;
+        }
+        return null;
+    }
     
     public boolean deleteProduct(Long id) {
         if (productRepository.existsById(id)) {
