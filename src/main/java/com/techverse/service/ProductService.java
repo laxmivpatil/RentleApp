@@ -125,8 +125,8 @@ public class ProductService {
         }
         return false;
     }
-    public boolean changeProductStatus(Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
+    public boolean changeProductStatus(Optional<Product> optionalProduct) {
+        
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             product.setActive(!product.isActive()); // Toggle status (active to inactive, inactive to active)

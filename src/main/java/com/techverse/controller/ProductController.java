@@ -10,12 +10,14 @@ import com.techverse.exception.UserException;
 import com.techverse.model.Category;
 import com.techverse.model.Product;
 import com.techverse.model.User;
+import com.techverse.repository.ProductRepository;
 import com.techverse.service.ProductService;
 import com.techverse.service.UserService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -23,6 +25,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+    private ProductRepository productRepository;
   
     
     @Autowired
@@ -166,10 +171,14 @@ public class ProductController {
         User user=userService.findUserProfileByJwt(authorizationHeader).get();
 
     	Map<String,Object> response = new HashMap<>();
-    	 boolean statusChanged = productService.changeProductStatus(id);
+    	Optional<Product> optionalProduct = productRepository.findById(id);
+    	System.out.println(optionalProduct.get().isActive());
+    	 boolean statusChanged = productService.changeProductStatus(optionalProduct);
+    	 System.out.println(optionalProduct.get().isActive());
          
              if ( statusChanged ) {
     	    	response.put("status", true);
+    	    	response.put("activestatus", optionalProduct.get().isActive());
     	        response.put("message", "Product status changed successfully");
     	         
     	    } else {
