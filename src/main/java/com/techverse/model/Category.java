@@ -17,6 +17,7 @@ public class Category {
 	    private Long id;
     private String name;
 
+    private String image="";
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Subcategory> subcategories;
     
@@ -30,7 +31,15 @@ public class Category {
         this.name = name;
     }
 
-    public List<Subcategory> getSubcategories() {
+    public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public List<Subcategory> getSubcategories() {
         return subcategories;
     }
 

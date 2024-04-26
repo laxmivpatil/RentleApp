@@ -12,13 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.techverse.model.Category;
 import com.techverse.model.Subcategory;
+import com.techverse.repository.CategoryRepository;
 import com.techverse.service.CategoryService;
+import com.techverse.service.StorageService;
 
 @RestController
 @RequestMapping("/categories")
@@ -26,6 +32,12 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private CategoryRepository categoryrepository;
+    
+    @Autowired
+    private StorageService storageService;
 
     @PostMapping
     public Category addCategoryWithSubcategories(@RequestBody Category category) {
@@ -41,11 +53,22 @@ public class CategoryController {
                     Map<String, Object> categoryMap = new HashMap<>();
                     categoryMap.put("id", category.getId());
                     categoryMap.put("name", category.getName());
+                    categoryMap.put("image", category.getImage());
                     return categoryMap;
                 })
                 .collect(Collectors.toList()));
 
         return response;
+    }
+    
+    @PutMapping("/update-image/{categoryId}")
+    public ResponseEntity<String> updateCategoryImage(
+            @PathVariable Long categoryId, 
+            @RequestParam("image") MultipartFile image) {
+       Category updatedCategory = categoryrepository.findById(categoryId).get();
+        String path=storageService.uploadFileOnAzure(image);
+        updatedCategory.setImage(path); 
+        return ResponseEntity.ok(path);
     }
     
     @GetMapping("/all")

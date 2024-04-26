@@ -21,13 +21,14 @@ public class CategoryService {
     }
 
     public Category addCategory(Category category) {
-    	 List<Subcategory> subcategories = category.getSubcategories();
-         for (Subcategory subcategory : subcategories) {
-             subcategory.setCategory(category);
-         }
-         category.setSubcategories(subcategories);
-         return categoryRepository.save(category);
-    }
+   	 List<Subcategory> subcategories = category.getSubcategories();
+        for (Subcategory subcategory : subcategories) {
+            subcategory.setCategory(category);
+        }
+        category.setImage("");
+        category.setSubcategories(subcategories);
+        return categoryRepository.save(category);
+   }
     
     public Category getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId).orElse(null);
