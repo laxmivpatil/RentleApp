@@ -17,6 +17,7 @@ import com.techverse.service.RecentSearchService;
 import com.techverse.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,16 +163,34 @@ public class ProductController {
         
     }
     @GetMapping("/search/{searchText}")
-    public Map<String, Object>  searchProducts(@PathVariable String searchText) {
-              
-        Map<String,Object> response = new HashMap<>();
-        response.put("product",  productService.searchByTitleOrCategory(searchText));
-
-        response.put("status", true);
-        response.put("message", "product retrived Successfully");
-        return response;
-    }
+    public Map<String, Object>  searchProducts(@PathVariable(required = false) String searchText) {
+    	  Map<String, Object> response = new HashMap<>();
     
+    	  if (searchText != null && !searchText.isEmpty()) {
+              List<Product> products = productService.searchByTitleOrCategory(searchText);
+              response.put("product", products);
+              response.put("status", true);
+              response.put("message", "Products retrieved successfully");
+          } else {
+              response.put("product", Collections.emptyList());
+              response.put("status", true);
+              response.put("message", "No search text provided, returning empty list of products");
+          }
+
+          return response;
+    }
+    @GetMapping("/search/")
+    public Map<String, Object>  searchProducts() {
+    	  Map<String, Object> response = new HashMap<>();
+    
+    	  
+              response.put("product", Collections.emptyList());
+              response.put("status", true);
+              response.put("message", "No search text provided, returning empty list of products");
+         
+
+          return response;
+    }
     @DeleteMapping("/delete/{productId}")
     public Map<String, Object> deleteProduct(@RequestHeader("Authorization") String authorizationHeader,    		
     		@PathVariable Long productId ) throws UserException  {
