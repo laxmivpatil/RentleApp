@@ -34,6 +34,9 @@ public class User {
 	 
 	 private String role;
 	 
+	 @JsonIgnore
+	 @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) // Cascade deletion of RecentSearch if associated user is deleted
+	 private List<RecentSearch> recentSearches;
 	 
 	 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	 @JsonIgnore
@@ -41,7 +44,19 @@ public class User {
 
 	 
 	 
-	 public String getProfile() {
+	 public List<RecentSearch> getRecentSearches() {
+		return recentSearches;
+	}
+
+
+
+	public void setRecentSearches(List<RecentSearch> recentSearches) {
+		this.recentSearches = recentSearches;
+	}
+
+
+
+	public String getProfile() {
 		return profile;
 	}
 

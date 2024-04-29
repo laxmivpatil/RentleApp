@@ -9,11 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.techverse.exception.UserException;
 import com.techverse.model.Category;
 import com.techverse.model.Product;
+import com.techverse.model.RecentSearch;
 import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
 import com.techverse.service.ProductService;
+import com.techverse.service.RecentSearchService;
 import com.techverse.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,9 @@ public class ProductController {
     
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private RecentSearchService recentSearchService;
   
     
     @Autowired
@@ -104,11 +110,14 @@ public class ProductController {
     }
     
     @GetMapping("/byproductid/{productId}")
-    public Map<String, Object> getProductDetailsWithUser(@PathVariable Long productId) {
-        
+    public Map<String, Object> getProductDetailsWithUser(@PathVariable Long productId,@RequestHeader("Authorization") String authorizationHeader) throws UserException {
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
     	Product p=productService.getProductDetailsWithUser(productId);
         
-        
+    	if (user != null && p != null) {
+            // Save recent search for the logged-in user
+            saveRecentSearch(p, user);
+        }
         Map<String,Object> response = new HashMap<>();
         response.put("product", p);
         response.put("user", p.getUser());
@@ -117,7 +126,27 @@ public class ProductController {
         response.put("message", "product retrived Successfully");
         return response;
     }
-    
+    public void saveRecentSearch(Product product, User user) {
+        RecentSearch recentSearch = new RecentSearch();
+        recentSearch.setProduct(product);
+        recentSearch.setUser(user);
+        recentSearch.setSearchTimestamp(LocalDateTime.now());
+        // Check and manage recent search count for the user
+        manageRecentSearchCount(user, recentSearch);
+
+        recentSearchService.save(recentSearch);
+    }
+
+    private void manageRecentSearchCount(User user, RecentSearch recentSearch) {
+        int maxRecentSearches = 15;
+        List<RecentSearch> userRecentSearches = recentSearchService.findRecentSearchesByUser(user);
+
+        if (userRecentSearches.size() >= maxRecentSearches) {
+            // Remove the oldest search (first in the list)
+            RecentSearch oldestSearch = userRecentSearches.get(0);
+            recentSearchService.delete(oldestSearch);
+        }
+    }
     @GetMapping("/byuserid")
     public Map<String, Object> getProductsByUserId(@RequestHeader("Authorization") String authorizationHeader)  throws UserException {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();

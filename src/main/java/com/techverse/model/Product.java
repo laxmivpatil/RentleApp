@@ -65,7 +65,9 @@ public class Product {
     private List<ImagePath> imagePaths = new ArrayList<>();
     
     
-    
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE) // Cascade deletion of RecentSearch if associated product is deleted
+    private List<RecentSearch> recentSearches;
     
 
     public List<ImagePath> getImagePaths() {
@@ -83,6 +85,14 @@ public class Product {
     }
 
 
+	public List<RecentSearch> getRecentSearches() {
+		return recentSearches;
+	}
+
+	public void setRecentSearches(List<RecentSearch> recentSearches) {
+		this.recentSearches = recentSearches;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -93,11 +103,7 @@ public class Product {
 		this.id = id;
 	}
 
-
- 
-
-
-	public boolean isActive() {
+ 	public boolean isActive() {
 		return active;
 	}
 
