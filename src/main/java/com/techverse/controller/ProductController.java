@@ -132,6 +132,17 @@ public class ProductController {
         
         
     }
+    @GetMapping("/search/{searchText}")
+    public Map<String, Object>  searchProducts(@PathVariable String searchText) {
+              
+        Map<String,Object> response = new HashMap<>();
+        response.put("product",  productService.searchByTitleOrCategory(searchText));
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+    }
+    
     @DeleteMapping("/delete/{productId}")
     public Map<String, Object> deleteProduct(@RequestHeader("Authorization") String authorizationHeader,    		
     		@PathVariable Long productId ) throws UserException  {

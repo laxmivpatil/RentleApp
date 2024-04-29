@@ -21,9 +21,13 @@ public class JwtProvider {
 	
 	public String generateToken(Authentication auth)
 	{
+		  Date issuedAt = new Date();
+	        // Calculate expiry time as 5 months from the issued date
+	        Date expiryDate = new Date(issuedAt.getTime() + (150L * 24L * 60L * 60L * 1000L)); // 150 days in milliseconds
+	       
 		String jwt=Jwts.builder()
 				.setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime()+846000000))
+				.setExpiration(expiryDate)
 				.claim("email", auth.getName())
 				.signWith(key).compact();
 
@@ -32,9 +36,13 @@ public class JwtProvider {
 	}
 	public String generateToken1(String emailorphone)
 	{
+		 Date issuedAt = new Date();
+	        // Calculate expiry time as 5 months from the issued date
+	        Date expiryDate = new Date(issuedAt.getTime() + (150L * 24L * 60L * 60L * 1000L)); // 150 days in milliseconds
+	 
 		String jwt=Jwts.builder()
 				.setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime()+846000000))
+				.setExpiration(expiryDate)
 				.claim("email", emailorphone)
 				.signWith(key).compact();
 

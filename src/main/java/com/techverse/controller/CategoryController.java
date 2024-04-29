@@ -66,6 +66,7 @@ public class CategoryController {
             @PathVariable Long categoryId, 
             @RequestParam("image") MultipartFile image) {
        Category updatedCategory = categoryrepository.findById(categoryId).get();
+       categoryrepository.save(updatedCategory);
         String path=storageService.uploadFileOnAzure(image);
         updatedCategory.setImage(path); 
         return ResponseEntity.ok(path);

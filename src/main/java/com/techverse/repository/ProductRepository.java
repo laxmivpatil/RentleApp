@@ -19,4 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	  
 	  
 	  List<Product> findAllByUserIdNotAndActiveTrue(Long userId);
+	  
+	  
+	  List<Product> findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(String title, String category);
 }

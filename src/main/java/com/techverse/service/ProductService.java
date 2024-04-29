@@ -118,6 +118,11 @@ public class ProductService {
         return null;
     }
     
+    public List<Product> searchByTitleOrCategory(String searchText) {
+        // Assuming your ProductRepository has a method for searching by title or category
+        return productRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(searchText, searchText);
+    }
+    
     public boolean deleteProduct(Long id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
