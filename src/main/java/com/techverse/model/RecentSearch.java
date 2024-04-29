@@ -1,5 +1,16 @@
 package com.techverse.model;
 
-public class RecentSearch {
+ 
 
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+public class RecentSearch {
+   
+    
+    
+    
+
+    // Getters and setters...
 }
