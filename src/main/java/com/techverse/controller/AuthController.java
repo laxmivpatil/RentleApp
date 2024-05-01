@@ -26,11 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.techverse.config.JwtProvider;
 import com.techverse.exception.UserException;
+import com.techverse.model.Cart;
 import com.techverse.model.User;
 import com.techverse.repository.UserRepository;
 import com.techverse.request.LoginRequest;
 import com.techverse.response.ApiResponse;
 import com.techverse.response.UserSignUpResponse;
+import com.techverse.service.CartService;
 import com.techverse.service.CustomUserServiceImplementation;
 import com.techverse.service.EmailService;
 import com.techverse.service.OtpService;
@@ -45,6 +47,8 @@ public class AuthController {
 	private EmailService emailService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CartService cartService;
 	@Autowired
 	private JwtProvider jwtProvider;
 	@Autowired
@@ -89,7 +93,7 @@ public class AuthController {
 		User createdUser=userService.createUser(fullName, phoneNumber, aadharNumber, email, address, referralCode, aadharCardImg,passwordEncoder.encode(otp));
 		 
 		User savedUser=userRepository.save(createdUser);
-		
+		Cart cart= cartService.createCart(savedUser);
 		 
 		  userresponse.setStatus(true);
           userresponse.setMessage("signup success and otp send to your email id => "+otp);

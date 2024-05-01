@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.techverse.exception.ProductException;
 import com.techverse.model.Product;
 import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
@@ -102,7 +103,15 @@ public class ProductService {
         return productRepository.findAllByUserIdNotAndActiveTrue(userId);
     }
     
-    
+    public Product findProductById(Long id) throws ProductException {
+		// TODO Auto-generated method stub
+		Optional<Product> product=productRepository.findById(id);
+		if(product.isPresent())
+		{
+			return product.get();
+		}
+		throw new ProductException("Product Not Found with id "+id);
+	}
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }

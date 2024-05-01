@@ -42,7 +42,11 @@ public class HomeController {
 	
     @Autowired
     private UserService userService;
-	
+    @GetMapping("/for")
+	 public String print()
+	 {
+		 return "welcome";
+	 }
 	
 	@GetMapping("/api/user/getbytoken")
 	public Map<String, Object> getuser(@RequestHeader("Authorization") String authorizationHeader) throws UserException

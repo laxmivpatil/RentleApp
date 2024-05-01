@@ -2,7 +2,7 @@ package com.techverse.config;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collections; 
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 	            .authorizeRequests(authorize -> authorize
 	                .antMatchers("/api/**").authenticated()
 	                .anyRequest().permitAll())
-	            .addFilterBefore(new JwtValidator(), UsernamePasswordAuthenticationFilter.class)
+	           
+	            //.addFilterBefore(new IpWhitelistFilter(), UsernamePasswordAuthenticationFilter.class) // Add IP whitelisting filter
+	             .addFilterBefore(new JwtValidator(), UsernamePasswordAuthenticationFilter.class)
 	            .csrf().disable()
 	            .cors().configurationSource(request -> {
 	                CorsConfiguration corsConfig = new CorsConfiguration();
