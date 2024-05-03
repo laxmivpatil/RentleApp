@@ -1,5 +1,7 @@
 package com.techverse.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,9 +11,10 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
  
+
 @Entity
-public class CartItem {
-	
+public class OrderItem {
+
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,7 +23,7 @@ public class CartItem {
 	
 	@JsonIgnore
 	@ManyToOne
-	private Cart cart;
+	private Order order;
 	
 	
 	@ManyToOne
@@ -36,21 +39,10 @@ public class CartItem {
 	
 	private Long userId;
 	
-	public CartItem() {
+	private LocalDateTime deliveryDate;
+	
+	public OrderItem() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public CartItem(Long id, Cart cart, Product product, String size, int quantity, Long price,
-			Long  discountedPrice, Long userId) {
-		super();
-		this.id = id;
-		this.cart = cart;
-		this.product = product;
-		this.size = size;
-		this.quantity = quantity;
-		this.price = price;
-		this.discountedPrice = discountedPrice;
-		this.userId = userId;
 	}
 
 	public Long getId() {
@@ -61,12 +53,12 @@ public class CartItem {
 		this.id = id;
 	}
 
-	public Cart getCart() {
-		return cart;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public Product getProduct() {
@@ -93,19 +85,23 @@ public class CartItem {
 		this.quantity = quantity;
 	}
 
+	 
+
+	 
+
 	public Long getPrice() {
 		return price;
 	}
 
-	public void setPrice(long l) {
-		this.price = l;
+	public void setPrice(Long price) {
+		this.price = price;
 	}
 
-	public Long  getDiscountedPrice() {
+	public Long getDiscountedPrice() {
 		return discountedPrice;
 	}
 
-	public void setDiscountedPrice(Long  discountedPrice) {
+	public void setDiscountedPrice(Long discountedPrice) {
 		this.discountedPrice = discountedPrice;
 	}
 
@@ -116,11 +112,28 @@ public class CartItem {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
-	
-	
-	
-	
-	
 
+	public LocalDateTime getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(LocalDateTime deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public OrderItem(Long id, Order order, Product product, String size, int quantity, Long price,
+			Long discountedPrice, Long userId, LocalDateTime deliveryDate) {
+		super();
+		this.id = id;
+		this.order = order;
+		this.product = product;
+		this.size = size;
+		this.quantity = quantity;
+		this.price = price;
+		this.discountedPrice = discountedPrice;
+		this.userId = userId;
+		this.deliveryDate = deliveryDate;
+	}
+	
+	
 }

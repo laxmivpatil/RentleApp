@@ -24,6 +24,8 @@ public class RecentSearchService {
 	    recentSearchRepository.save(recentSearch);
 	}
 	 public void delete(RecentSearch recentSearch) {
+		 recentSearch.setProduct(null);
+		 recentSearch.setUser(null);
 	        recentSearchRepository.delete(recentSearch);
 	    }
 	 

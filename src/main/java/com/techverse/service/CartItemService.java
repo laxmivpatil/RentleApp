@@ -25,9 +25,6 @@ public class CartItemService {
 	
 	@Autowired
 	private CartRepository cartRepository;
-	
-
-	 
 	public CartItem createCartitem(CartItem cartItem) {
 		 
 		cartItem.setQuantity(1);
@@ -43,7 +40,7 @@ public class CartItemService {
 			cartItem.setPrice(cartItem.getProduct().getYearlyPrice()*cartItem.getQuantity());
 			
 		}
-		cartItem.setDiscountedPrice(0*cartItem.getQuantity());
+		cartItem.setDiscountedPrice(0L*cartItem.getQuantity());
 		
 		
 		CartItem createdCartItem=cartItemRepository.save(cartItem);
@@ -63,7 +60,7 @@ public class CartItemService {
 		if(user.getId().equals(userId)) {
 			item.setQuantity(cartItem.getQuantity());
 			item.setPrice(item.getQuantity()*item.getProduct().getDailyPrice());
-			item.setDiscountedPrice(0*item.getQuantity());
+			item.setDiscountedPrice(0L*item.getQuantity());
 			
 		}
 		

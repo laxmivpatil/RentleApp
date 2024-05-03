@@ -28,7 +28,7 @@ public class User {
 	 private String aadharCardImg;
 	 private Date createdDate;
 	 private String profile="";
-	 
+	  
 	 private String deviceToken="";
 	 
 	 

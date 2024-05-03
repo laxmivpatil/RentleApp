@@ -113,6 +113,7 @@ public class ProductController {
     @GetMapping("/byproductid/{productId}")
     public Map<String, Object> getProductDetailsWithUser(@PathVariable Long productId,@RequestHeader("Authorization") String authorizationHeader) throws UserException {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+    	System.out.println(user.getId());
     	Product p=productService.getProductDetailsWithUser(productId);
         
     	if (user != null && p != null) {

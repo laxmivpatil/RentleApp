@@ -48,7 +48,11 @@
     </dependency>
 		 
     
- 
+ <dependency>
+    <groupId>com.razorpay</groupId>
+    <artifactId>razorpay-java</artifactId>
+    <version>1.4.5</version>
+</dependency>
     <!-- Apache Commons Validator -->
     <dependency>
         <groupId>commons-validator</groupId>
