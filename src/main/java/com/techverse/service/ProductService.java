@@ -92,6 +92,7 @@ public class ProductService {
         product.setDepth(depth);
         product.setUser(user);
         product.setActive(true);
+        product.setAverageRating(0);
 
         return productRepository.save(product);
     }

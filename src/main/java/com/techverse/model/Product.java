@@ -55,6 +55,12 @@ public class Product {
     private double depth;
     
     
+   	private double averageRating;
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
+
+     
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -70,7 +76,15 @@ public class Product {
     private List<RecentSearch> recentSearches;
     
 
-    public List<ImagePath> getImagePaths() {
+    public double getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(double averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	public List<ImagePath> getImagePaths() {
         return imagePaths;
     }
 
@@ -450,6 +464,14 @@ public class Product {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
 	}
 
     
