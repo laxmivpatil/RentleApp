@@ -1,7 +1,7 @@
 package com.techverse.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
- 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -95,7 +95,17 @@ public class ProductController {
         return productService.getAllProducts();
     }
     */
-    
+    @GetMapping("/popular")
+    public Map<String, Object> getTop15PopularProducts() {
+        List<Product> topProducts = productService.getTop15PopularProducts();
+        Map<String,Object> response = new HashMap<>();
+        response.put("product", topProducts);
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+        
+    }
     @GetMapping("/all")
     public Map<String, Object> getAllActiveProductsOfOtherUsers(@RequestHeader("Authorization") String authorizationHeader)  throws UserException  {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();

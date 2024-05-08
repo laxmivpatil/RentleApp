@@ -103,7 +103,9 @@ public class ProductService {
     public List<Product> getAllActiveProductsOfOtherUsers(Long userId) {
         return productRepository.findAllByUserIdNotAndActiveTrue(userId);
     }
-    
+    public List<Product> getTop15PopularProducts() {
+        return productRepository.findTop15PopularProducts();
+    }
     public Product findProductById(Long id) throws ProductException {
 		// TODO Auto-generated method stub
 		Optional<Product> product=productRepository.findById(id);
