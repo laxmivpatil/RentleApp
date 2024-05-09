@@ -159,10 +159,7 @@ public class AuthController {
 		 
 		
 		return new ResponseEntity<UserSignUpResponse>(userresponse,HttpStatus.OK);
-		
-		 
-		
-		
+	 		
 	}
 	  /****final****/
     @GetMapping("/generateotp")

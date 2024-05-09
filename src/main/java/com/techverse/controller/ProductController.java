@@ -65,7 +65,7 @@ public class ProductController {
     		@RequestPart(required = false) String  width,
     		@RequestPart(required = false) String  depth,
     		@RequestPart(name ="productImage1",required = false) MultipartFile productImage1,
-    		@RequestPart(required = false) MultipartFile productImage2,
+    		@RequestPart(required = false) MultipartFile productImage2, 
     		@RequestPart(required = false) MultipartFile productImage3,
     		@RequestPart(required = false) MultipartFile productImage4,
     		@RequestPart(required = false) MultipartFile productImage5) throws UserException  {
@@ -222,10 +222,7 @@ public class ProductController {
     	        response.put("message", "Product not found");
     	         
     	    }
-    	
-    	
-    	
-    	System.out.println(user.getEmail());
+    	    System.out.println(user.getEmail());
     	 
         
         return response;

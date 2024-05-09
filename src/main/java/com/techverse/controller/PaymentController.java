@@ -50,10 +50,8 @@ public class PaymentController {
 	@PostMapping("/{orderId}")
 	public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable Long orderId,
 			@RequestHeader("Authorization")String jwt)throws OrderException, RazorpayException{
-		
-		
 		Order order=orderService.findOrderById(orderId);
-		System.out.println("order"+order.getId());
+		 
 		
 		try {
 			

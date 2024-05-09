@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
  
 
 @Entity
@@ -21,12 +23,11 @@ import javax.persistence.Table;
 public class Order {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "custom-long-id")
+    @GenericGenerator(name = "custom-long-id", strategy = "com.techverse.config.CustomLongIDGenerator")
+    private Long orderId;
 	
-	@Column(name="order_id")
-	private String orderId;
-	
+	 
 	@ManyToOne
 	private User user;
 	
@@ -64,13 +65,12 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Long id, String orderId, User user, List<OrderItem> orderItems, LocalDateTime orderDate,
+	public Order(Long orderId,  User user, List<OrderItem> orderItems, LocalDateTime orderDate,
 			LocalDateTime deliveryDate, String shippingAddress, PaymentDetails paymentDetails, double toatalPrice,
 			Long  totalDiscountedPrice, Long  discounte, String orderStatus, int totalItem,
 			LocalDateTime createdAt) {
 		super();
-		this.id = id;
-		this.orderId = orderId;
+		this.orderId = orderId; 
 		this.user = user;
 		this.orderItems = orderItems;
 		this.orderDate = orderDate;
@@ -85,19 +85,14 @@ public class Order {
 		this.createdAt = createdAt;
 	}
 
-	public Long getId() {
-		return id;
-	}
+	 
+	 
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getOrderId() {
+	public Long getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(String orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
 
@@ -124,8 +119,7 @@ public class Order {
 	public void setOrderDate(LocalDateTime orderDate) {
 		this.orderDate = orderDate;
 	}
-
-	public LocalDateTime getDeliveryDate() {
+ 	public LocalDateTime getDeliveryDate() {
 		return deliveryDate;
 	}
 
