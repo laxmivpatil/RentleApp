@@ -74,7 +74,7 @@ public class OrderService {
 		
 		createdOrder.setShippingAddress(shippAddress);
 		createdOrder.setOrderDate(LocalDateTime.now());
-		createdOrder.setOrderStatus("PENDING");
+		createdOrder.setOrderStatus("PLACED");
 		createdOrder.getPaymentDetails().setStatus("PENDING");
 		createdOrder.setCreatedAt(LocalDateTime.now());
 		

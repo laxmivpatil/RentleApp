@@ -69,7 +69,7 @@ public class OrderController {
            order.getPaymentDetails().setRazorpayPaymentLinkReferenceId(checkoutRequest.getRazorpayPaymentLinkReferenceId());
            order.getPaymentDetails().setRazorpayPaymentLinkStatus(checkoutRequest.getRazorpayPaymentLinkStatus());
            order.getPaymentDetails().setStatus(paymentSuccess);
-           order.setOrderStatus("processing");
+           order.setOrderStatus("CONFIRMED");
            List<OrderItem> orderitems=order.getOrderItems();
            for(OrderItem o:orderitems) {
         	   
@@ -97,23 +97,33 @@ public class OrderController {
         }
     }
 	
-	@GetMapping("/user")
-	public ResponseEntity<List<Order>> userOrderHistory(@RequestHeader("Authorization") String jwt)throws UserException{
+	@GetMapping("/")
+	public ResponseEntity<Map<String, Object>> userOrderHistory(@RequestHeader("Authorization") String jwt)throws UserException{
  		User user =userService.findUserProfileByJwt(jwt).get();
 		List<Order> order=orderService.usersOrderHistory(user.getId());
- 		 return new ResponseEntity<>(order,HttpStatus.OK);
+		 Map<String,Object> response = new HashMap<>();
+         response.put("Order", order);
+
+         response.put("status", true);
+         response.put("message", "order history  get successfully");
+         return new ResponseEntity<Map<String, Object>>(response,HttpStatus.OK);
  	}
 	
 	
 	@GetMapping("/{Id}")
-	public ResponseEntity<Order> findOrderById(@PathVariable("Id") Long orderId,
+	public ResponseEntity<Map<String, Object>> findOrderById(@PathVariable("Id") Long orderId,
 			@RequestHeader("Authorization") String jwt)throws UserException,OrderException{
 		
 		User user =userService.findUserProfileByJwt(jwt).get();
 		
 		Order order=orderService.findOrderById(orderId);
 		
-		 return new ResponseEntity<>(order,HttpStatus.OK);
+		Map<String,Object> response = new HashMap<>();
+        response.put("Order", order);
+
+        response.put("status", true);
+        response.put("message", "order by id  get successfully");
+        return new ResponseEntity<Map<String, Object>>(response,HttpStatus.OK);
 		
 		
 	}
