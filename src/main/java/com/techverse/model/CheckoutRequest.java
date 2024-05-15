@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class CheckoutRequest {
 	
-	private Long orderId;
+	private String orderId;
 	
 	private String paymentStatus;
 	
@@ -22,11 +22,13 @@ public class CheckoutRequest {
 	
 	private LocalDateTime deliveryDate;
 	
-	public Long getOrderId() {
+	 
+
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 

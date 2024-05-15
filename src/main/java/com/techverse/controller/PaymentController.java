@@ -48,7 +48,7 @@ public class PaymentController {
 	
 	
 	@PostMapping("/{orderId}")
-	public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable Long orderId,
+	public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable  String orderId,
 			@RequestHeader("Authorization")String jwt)throws OrderException, RazorpayException{
 		Order order=orderService.findOrderById(orderId);
 		 
@@ -102,7 +102,7 @@ public class PaymentController {
 	}
 	@GetMapping("/")
 		public ResponseEntity<ApiResponse> redirect(@RequestParam(name="payment_id")String paymentId,
-				@RequestParam(name="order_id")Long orderId) throws OrderException,RazorpayException
+				@RequestParam(name="order_id")String orderId) throws OrderException,RazorpayException
 		{
 			Order order=orderService.findOrderById(orderId);
 			

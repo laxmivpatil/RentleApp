@@ -49,8 +49,16 @@ public class CartService {
 			cartItem.setCart(cart);
 			cartItem.setQuantity(req.getQuantity());
 			cartItem.setUserId(userId);
-			
-			Long  price=req.getQuantity()*product.getDailyPrice();
+			Long  price=0L;
+			if(product.isDaily()) {
+			  price=req.getQuantity()*product.getDailyPrice();
+			}
+			if(product.isMonthly()) {
+				  price=req.getQuantity()*product.getMoonthlyPrice();
+				}
+			if(product.isYearly()){
+				  price=req.getQuantity()*product.getYearlyPrice();
+				}
 			cartItem.setPrice(price);
 			cartItem.setSize("");
 			

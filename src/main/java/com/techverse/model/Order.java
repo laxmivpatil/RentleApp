@@ -23,9 +23,9 @@ import org.hibernate.annotations.GenericGenerator;
 public class Order {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "custom-long-id")
-    @GenericGenerator(name = "custom-long-id", strategy = "com.techverse.config.CustomLongIDGenerator")
-    private Long orderId;
+  //  @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "custom-long-id")
+   // @GenericGenerator(name = "custom-long-id", strategy = "com.techverse.config.CustomLongIDGenerator")
+    private String orderId;
 	
 	 
 	@ManyToOne
@@ -65,7 +65,7 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Long orderId,  User user, List<OrderItem> orderItems, LocalDateTime orderDate,
+	public Order(String orderId,  User user, List<OrderItem> orderItems, LocalDateTime orderDate,
 			LocalDateTime deliveryDate, String shippingAddress, PaymentDetails paymentDetails, double toatalPrice,
 			Long  totalDiscountedPrice, Long  discounte, String orderStatus, int totalItem,
 			LocalDateTime createdAt) {
@@ -88,11 +88,13 @@ public class Order {
 	 
 	 
 
-	public Long getOrderId() {
+	 
+
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 

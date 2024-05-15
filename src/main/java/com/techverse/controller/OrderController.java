@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.razorpay.RazorpayException;
 import com.techverse.exception.OrderException;
 import com.techverse.exception.UserException;
 import com.techverse.model.CheckoutRequest;
@@ -27,6 +29,7 @@ import com.techverse.repository.OrderItemRepository;
 import com.techverse.repository.OrderRepository;
 import com.techverse.response.ApiResponse;
 import com.techverse.service.OrderService;
+import com.techverse.service.OrderService1;
 import com.techverse.service.UserService;
 
 @RestController
@@ -44,10 +47,29 @@ public class OrderController {
 	private OrderItemRepository orderItemRepository;
 	
 	
+	
+	
+	@Autowired
+    private OrderService1 orderService1;
+
+    @PostMapping("/generate")
+    public String generateOrder(@RequestParam double amount,
+                                @RequestParam String currency,
+                                @RequestParam String receipt) {
+        try {
+            return orderService1.createOrder(amount, currency, receipt  );
+        } catch (RazorpayException e) {
+            e.printStackTrace();
+            return "Error creating order: " + e.getMessage();
+        }
+    }
+	
+	
 	@PostMapping("/")
-	public ResponseEntity<Order> createOrder(@RequestBody String shippingAddress,@RequestHeader("Authorization") String jwt)throws UserException{
+	public ResponseEntity<Order> createOrder(@RequestBody String shippingAddress,@RequestHeader("Authorization") String jwt)throws  RazorpayException,UserException{
 		
 		User user =userService.findUserProfileByJwt(jwt).get();
+		System.out.println(user.getId());
 		Order order=orderService.createOrder(user, shippingAddress);
  		return new ResponseEntity<Order>(order,HttpStatus.OK);
 	}
@@ -111,7 +133,7 @@ public class OrderController {
 	
 	
 	@GetMapping("/{Id}")
-	public ResponseEntity<Map<String, Object>> findOrderById(@PathVariable("Id") Long orderId,
+	public ResponseEntity<Map<String, Object>> findOrderById(@PathVariable("Id") String orderId,
 			@RequestHeader("Authorization") String jwt)throws UserException,OrderException{
 		
 		User user =userService.findUserProfileByJwt(jwt).get();
@@ -128,7 +150,7 @@ public class OrderController {
 		
 	}
 	@DeleteMapping("/{Id}")
-	public ResponseEntity<ApiResponse> deleteOrderById(@PathVariable("Id") Long orderId,
+	public ResponseEntity<ApiResponse> deleteOrderById(@PathVariable("Id") String orderId,
 			@RequestHeader("Authorization") String jwt)throws UserException,OrderException{
 		
 		User user =userService.findUserProfileByJwt(jwt).get();

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.razorpay.RazorpayException;
 import com.techverse.exception.OrderException;
 import com.techverse.model.Cart;
 import com.techverse.model.CartItem;
@@ -19,13 +21,17 @@ import com.techverse.repository.OrderItemRepository;
 import com.techverse.repository.OrderRepository;
 import com.techverse.repository.UserRepository;
 
+
+
 @Service
 public class OrderService {
 	
 
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
+	@Autowired
+    private OrderService1 orderService1;
 	@Autowired
 	private CartRepository cartRepository;
 	
@@ -43,7 +49,13 @@ public class OrderService {
 	
 	@Autowired
 	private OrderItemService orderItemSrvice;
-	public Order createOrder(User user, String shippAddress) {
+	
+	
+ 
+	
+	
+	
+	public Order createOrder(User user, String shippAddress) throws RazorpayException{
  	Cart cart =cartService.findUserCart(user.getId());
 		List<OrderItem> orderItems=new ArrayList<>();
 		
@@ -64,7 +76,10 @@ public class OrderService {
 			orderItems.add(createdOrderItem);
 		}
 		
+		String order_id=orderService1.createOrder(cart.getTotalPrice(), "INR", RandomStringUtils.randomAlphanumeric(10));
+		//money is in mind
 		Order createdOrder=new Order();
+		createdOrder.setOrderId(order_id);
 		createdOrder.setUser(user);
 		createdOrder.setOrderItems(orderItems);
 		createdOrder.setToatalPrice(cart.getTotalPrice());
@@ -90,7 +105,7 @@ public class OrderService {
 	}
 
 	 
-	public Order findOrderById(Long orderId) throws OrderException {
+	public Order findOrderById(String orderId) throws OrderException {
 		 Optional<Order> opt=orderRepository.findById(orderId);
 		 if(opt.isPresent())
 		 {
@@ -106,7 +121,7 @@ public class OrderService {
 	}
 
  
-	public Order placedOrder(Long orderId) throws OrderException {
+	public Order placedOrder(String orderId) throws OrderException {
 		Order order=findOrderById(orderId);
 		order.setOrderStatus("PLACED");
 		order.getPaymentDetails().setStatus("COMPLETED");
@@ -117,7 +132,7 @@ public class OrderService {
 	}
 
 	 
-	public Order confirmedOrder(Long orderId) throws OrderException {
+	public Order confirmedOrder(String orderId) throws OrderException {
 		Order order=findOrderById(orderId);
 		order.setOrderStatus("CONFIRMED");
 		 
@@ -125,7 +140,7 @@ public class OrderService {
 	}
 
 	 
-	public Order shippedOrder(Long orderId) throws OrderException {
+	public Order shippedOrder(String  orderId) throws OrderException {
 		Order order=findOrderById(orderId);
 		order.setOrderStatus("SHIPPED");
 		 
@@ -134,7 +149,7 @@ public class OrderService {
 	}
 
  
-	public Order deliveredOrder(Long orderId) throws OrderException {
+	public Order deliveredOrder(String orderId) throws OrderException {
 		Order order=findOrderById(orderId);
 		order.setOrderStatus("DELIVERED");
 		 
@@ -143,7 +158,7 @@ public class OrderService {
 	}
 
 	 
-	public Order cancledOrder(Long orderId) throws OrderException {
+	public Order cancledOrder(String orderId) throws OrderException {
 		Order order=findOrderById(orderId);
 		order.setOrderStatus("CANCELLED");
 		 
@@ -158,7 +173,7 @@ public class OrderService {
 	}
 
 	 
-	public void deleteOrder(Long orderId) throws OrderException { 
+	public void deleteOrder(String orderId) throws OrderException { 
 		
 		Order order=findOrderById(orderId);
 		orderRepository.deleteById(orderId);
