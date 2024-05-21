@@ -96,7 +96,7 @@ public class OrderController {
         response.put("message", "shipping Address added successfully");
         return new ResponseEntity<Map<String, Object>>(response,HttpStatus.OK);
     }
-    @GetMapping("/getshippingaddress")
+    @GetMapping("/getshippingaddresses")
     public ResponseEntity<Map<String, Object>> getShippingAddressesByUser(@RequestHeader("Authorization") String jwt)throws UserException {
     	User user =userService.findUserProfileByJwt(jwt).get();
         
@@ -156,6 +156,62 @@ public class OrderController {
         response.put("status", true);
         response.put("message", "Shipping address updated successfully");
         response.put("shippingAddress", existingAddress);
+
+        return ResponseEntity.ok(response);
+    }
+    
+    
+    @DeleteMapping("/deleteshippingaddress/{addressId}")
+    public ResponseEntity<Map<String, Object>> deleteShippingAddress(
+            @PathVariable("addressId") Long addressId,
+            @RequestHeader("Authorization") String jwt) throws UserException {
+    	User user =userService.findUserProfileByJwt(jwt).get();
+        
+
+        
+        Optional<ShippingAddress> optionalShippingAddress = shippingAddressRepository.findById(addressId);
+        if (optionalShippingAddress.isEmpty()) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Shipping address not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        ShippingAddress shippingAddress = optionalShippingAddress.get();
+        // Check if the shipping address belongs to the user
+        if (!shippingAddress.getUser().equals(user)) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Shipping address does not belong to the user");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
+
+        shippingAddressRepository.delete(shippingAddress);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", true);
+        response.put("message", "Shipping address deleted successfully");
+
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/getshippingaddress/{addressId}")
+    public ResponseEntity<Map<String, Object>> getShippingAddressById(
+            @PathVariable("addressId") Long addressId,
+            @RequestHeader("Authorization") String jwt) {
+        Optional<ShippingAddress> optionalShippingAddress = shippingAddressRepository.findById(addressId);
+        if (optionalShippingAddress.isEmpty()) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Shipping address not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        ShippingAddress shippingAddress = optionalShippingAddress.get();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", true);
+        response.put("message", "Shipping address retrieved successfully");
+        response.put("shippingAddress", shippingAddress);
 
         return ResponseEntity.ok(response);
     }
