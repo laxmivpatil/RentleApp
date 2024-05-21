@@ -44,6 +44,21 @@ public class User {
 
 	 
 	 
+	 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<ShippingAddress> shippingAddresses = new ArrayList<>();
+
+	    public List<ShippingAddress> getShippingAddresses() {
+	        return shippingAddresses;
+	    }
+
+	    public void setShippingAddresses(List<ShippingAddress> shippingAddresses) {
+	        this.shippingAddresses = shippingAddresses;
+	    }
+	 
+	    
+	    
+	    
+	 
 	 public List<RecentSearch> getRecentSearches() {
 		return recentSearches;
 	}

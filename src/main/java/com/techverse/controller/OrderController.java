@@ -3,6 +3,7 @@ package com.techverse.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,12 @@ import com.techverse.exception.UserException;
 import com.techverse.model.CheckoutRequest;
 import com.techverse.model.Order;
 import com.techverse.model.OrderItem;
+import com.techverse.model.ShippingAddress;
 import com.techverse.model.User;
 import com.techverse.repository.OrderItemRepository;
 import com.techverse.repository.OrderRepository;
+import com.techverse.repository.ShippingAddressRepository;
+import com.techverse.repository.UserRepository;
 import com.techverse.response.ApiResponse;
 import com.techverse.service.OrderService;
 import com.techverse.service.OrderService1;
@@ -40,7 +44,14 @@ public class OrderController {
 	private OrderService orderService;
 	
 	@Autowired
+	private ShippingAddressRepository shippingAddressRepository;
+	
+	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	UserRepository userRepository;
+	
 	@Autowired
 	private OrderRepository orderRepository;
 	@Autowired
@@ -65,6 +76,89 @@ public class OrderController {
     }
 	
 	
+    @PostMapping("/addshippingaddress")
+    public ResponseEntity<Map<String, Object>> addShippingAddress(@RequestBody ShippingAddress shippingAddress,@RequestHeader("Authorization") String jwt)throws UserException {
+        // Retrieve the user by ID (you may adjust this based on your authentication mechanism)
+    	User user =userService.findUserProfileByJwt(jwt).get();
+         
+
+        // Set the user for the shipping address
+        shippingAddress.setUser(user);
+        shippingAddressRepository.save(shippingAddress);
+        // Add the shipping address to the user's list of shipping addresses
+        user.getShippingAddresses().add(shippingAddress);
+        userRepository.save(user);
+        
+        Map<String,Object> response = new HashMap<>();
+        response.put("ShippingAddress", shippingAddress);
+
+        response.put("status", true);
+        response.put("message", "shipping Address added successfully");
+        return new ResponseEntity<Map<String, Object>>(response,HttpStatus.OK);
+    }
+    @GetMapping("/getshippingaddress")
+    public ResponseEntity<Map<String, Object>> getShippingAddressesByUser(@RequestHeader("Authorization") String jwt)throws UserException {
+    	User user =userService.findUserProfileByJwt(jwt).get();
+        
+ 
+        List<ShippingAddress> shippingAddresses = user.getShippingAddresses();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", true);
+        response.put("message", "Shipping addresses retrieved successfully");
+        response.put("shippingAddresses", shippingAddresses);
+
+        return ResponseEntity.ok(response);
+    }
+    
+    @PutMapping("/editshippingaddress/{addressId}")
+    public ResponseEntity<Map<String, Object>> editShippingAddress(
+            @PathVariable("addressId") Long addressId,
+            @RequestBody ShippingAddress updatedAddress,
+            @RequestHeader("Authorization") String jwt)throws UserException {
+    	User user =userService.findUserProfileByJwt(jwt).get();
+        
+
+        
+        Optional<ShippingAddress> optionalShippingAddress = shippingAddressRepository.findById(addressId);
+        if (optionalShippingAddress.isEmpty()) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Shipping address not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        ShippingAddress existingAddress = optionalShippingAddress.get();
+        // Check if the existing address belongs to the user
+        if (!existingAddress.getUser().equals(user)) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Shipping address does not belong to the user");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
+
+        // Update the existing address with the new data
+        existingAddress.setStreet1(updatedAddress.getStreet1());
+        existingAddress.setStreet2(updatedAddress.getStreet2());
+        existingAddress.setCity(updatedAddress.getCity());
+        existingAddress.setPincode(updatedAddress.getPincode());
+        existingAddress.setMobile(updatedAddress.getMobile());
+        existingAddress.setAlternateMobile(updatedAddress.getAlternateMobile());
+        existingAddress.setLandmark(updatedAddress.getLandmark());
+        existingAddress.setState(updatedAddress.getState());
+        existingAddress.setCountry(updatedAddress.getCountry());
+        existingAddress.setAddressType(updatedAddress.getAddressType());
+        existingAddress.setSetDefaultAddress(updatedAddress.isSetDefaultAddress());
+
+        shippingAddressRepository.save(existingAddress);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", true);
+        response.put("message", "Shipping address updated successfully");
+        response.put("shippingAddress", existingAddress);
+
+        return ResponseEntity.ok(response);
+    }
 	@PostMapping("/")
 	public ResponseEntity<Order> createOrder(@RequestBody String shippingAddress,@RequestHeader("Authorization") String jwt)throws  RazorpayException,UserException{
 		
