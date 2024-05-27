@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -110,7 +111,29 @@ public class OrderController {
 
         return ResponseEntity.ok(response);
     }
-    
+    @GetMapping("/getshippingaddress/default")
+    public ResponseEntity<Map<String, Object>> getDefaultShippingAddressesByUser(@RequestHeader("Authorization") String jwt) throws UserException {
+        User user = userService.findUserProfileByJwt(jwt).get();
+
+        // Filter shipping addresses where setDefaultAddress is true
+        List<ShippingAddress> shippingAddresses = user.getShippingAddresses().stream()
+                .filter(ShippingAddress::isSetDefaultAddress)
+                .collect(Collectors.toList());
+
+        if (shippingAddresses.isEmpty()) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Default shipping address not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", true);
+        response.put("message", "Default shipping address retrieved successfully");
+        response.put("shippingAddresses", shippingAddresses);
+
+        return ResponseEntity.ok(response);
+    }
     @PutMapping("/editshippingaddress/{addressId}")
     public ResponseEntity<Map<String, Object>> editShippingAddress(
             @PathVariable("addressId") Long addressId,
