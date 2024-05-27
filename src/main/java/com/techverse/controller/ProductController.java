@@ -173,6 +173,20 @@ public class ProductController {
         
         
     }
+    @GetMapping("/homeproduct")
+    public Map<String, Object> getProductsforhome(@RequestHeader("Authorization") String authorizationHeader)  throws UserException {
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+       
+        Map<String,Object> response = new HashMap<>();
+        response.put("product", productRepository.findTop5ByActiveOrderByCreatedAtDesc(true));
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+        
+        
+        
+    }
     @GetMapping("/search/{searchText}")
     public Map<String, Object>  searchProducts(@PathVariable(required = false) String searchText) {
     	  Map<String, Object> response = new HashMap<>();

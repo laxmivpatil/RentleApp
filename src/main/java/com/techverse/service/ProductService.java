@@ -9,6 +9,7 @@ import com.techverse.model.Product;
 import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +94,7 @@ public class ProductService {
         product.setUser(user);
         product.setActive(true);
         product.setAverageRating(0);
+        product.setCreatedAt(LocalDateTime.now());;
 
         return productRepository.save(product);
     }

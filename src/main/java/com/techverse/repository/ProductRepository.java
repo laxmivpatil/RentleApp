@@ -26,4 +26,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	  
 	  @Query(value = "SELECT p FROM Product p ORDER BY p.averageRating DESC")
 	    List<Product> findTop15PopularProducts();
+	  
+	  
+	  List<Product> findTop5ByActiveOrderByCreatedAtDesc(boolean active);
+	  
 }

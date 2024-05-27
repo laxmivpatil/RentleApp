@@ -1,6 +1,7 @@
 package com.techverse.model;
  
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class Product {
     
     
    	private double averageRating;
+   	private LocalDateTime createdAt;
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
@@ -76,7 +78,15 @@ public class Product {
     private List<RecentSearch> recentSearches;
     
 
-    public double getAverageRating() {
+    public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public double getAverageRating() {
 		return averageRating;
 	}
 
