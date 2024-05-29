@@ -87,6 +87,8 @@ public class OrderController {
         shippingAddress.setUser(user);
         shippingAddressRepository.save(shippingAddress);
         // Add the shipping address to the user's list of shipping addresses
+        user.getShippingAddresses().forEach(address -> address.setSetDefaultAddress(false));
+
         user.getShippingAddresses().add(shippingAddress);
         userRepository.save(user);
         
@@ -96,6 +98,49 @@ public class OrderController {
         response.put("status", true);
         response.put("message", "shipping Address added successfully");
         return new ResponseEntity<Map<String, Object>>(response,HttpStatus.OK);
+    }
+    @PostMapping("/setshippingaddress")
+    public ResponseEntity<Map<String, Object>> setShippingAddress(@RequestParam Long addressId,@RequestHeader("Authorization") String jwt)throws UserException {
+        // Retrieve the user by ID (you may adjust this based on your authentication mechanism)
+    	User user =userService.findUserProfileByJwt(jwt).get();
+         
+
+System.out.println("fkdgjkhdfkjghkdfjhg");
+        // Fetch the shipping address by ID
+        Optional<ShippingAddress> optionalShippingAddress = shippingAddressRepository.findById(addressId);
+        if (optionalShippingAddress.isEmpty()) {
+            // Handle case where address ID is not found
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", false);
+            errorResponse.put("message", "Shipping address not found for ID: " + addressId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        ShippingAddress shippingAddress = optionalShippingAddress.get();
+
+        // Set the user for the shipping address
+       // shippingAddress.setUser(user);
+
+        // Set default address for the selected address
+        shippingAddress.setSetDefaultAddress(true);
+
+        // Set all other addresses of the user to non-default
+        user.getShippingAddresses().forEach(address -> {
+            if (!address.getId().equals(addressId)) {
+                address.setSetDefaultAddress(false);
+            }
+        });
+
+        // Save the updated shipping address and user
+        shippingAddressRepository.save(shippingAddress);
+        userRepository.save(user);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("ShippingAddress", shippingAddress);
+        response.put("status", true);
+        response.put("message", "Default shipping address set successfully");
+
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/getshippingaddresses")
     public ResponseEntity<Map<String, Object>> getShippingAddressesByUser(@RequestHeader("Authorization") String jwt)throws UserException {
