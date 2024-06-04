@@ -36,7 +36,9 @@ import com.techverse.service.CartService;
 import com.techverse.service.CustomUserServiceImplementation;
 import com.techverse.service.EmailService;
 import com.techverse.service.OtpService;
-import com.techverse.service.UserService; 
+import com.techverse.service.UserService;
+
+ 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
