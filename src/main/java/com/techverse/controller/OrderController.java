@@ -99,7 +99,7 @@ public class OrderController {
         response.put("message", "shipping Address added successfully");
         return new ResponseEntity<Map<String, Object>>(response,HttpStatus.OK);
     }
-    @PostMapping("/setshippingaddress")
+    @GetMapping("/setshippingaddress")
     public ResponseEntity<Map<String, Object>> setShippingAddress(@RequestParam Long addressId,@RequestHeader("Authorization") String jwt)throws UserException {
         // Retrieve the user by ID (you may adjust this based on your authentication mechanism)
     	User user =userService.findUserProfileByJwt(jwt).get();
