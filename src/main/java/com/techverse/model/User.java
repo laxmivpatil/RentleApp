@@ -34,6 +34,14 @@ public class User {
 	 
 	 private String role;
 	 
+	  
+		@ManyToMany
+	    @JoinTable(
+	            name = "user_favorite_products",
+	            joinColumns = @JoinColumn(name = "user_id"),
+	            inverseJoinColumns = @JoinColumn(name = "product_id"))
+	    private List<Product> favoriteProducts = new ArrayList<>();
+	 
 	 @JsonIgnore
 	 @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) // Cascade deletion of RecentSearch if associated user is deleted
 	 private List<RecentSearch> recentSearches;
@@ -244,6 +252,14 @@ public class User {
 	 
 		this.createdDate = createdDate;
 		this.role="Individual";
+	}
+
+	public List<Product> getFavoriteProducts() {
+		return favoriteProducts;
+	}
+
+	public void setFavoriteProducts(List<Product> favoriteProducts) {
+		this.favoriteProducts = favoriteProducts;
 	}
 
 	 
