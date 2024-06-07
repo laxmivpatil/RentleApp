@@ -113,7 +113,8 @@ public class HomeController {
 	 
 	 
 		@PostMapping("/api/user/favorite-products")
-	    public User addFavoriteProduct(@RequestHeader("Authorization") String jwt, @RequestParam Long productId)throws UserException,ProductException {
+	    public User addFavoriteProduct(@RequestHeader("Authorization") String jwt, @RequestBody Map<String, Long> request)throws UserException,ProductException {
+			 Long productId = request.get("productId");
 			User user =userService.findUserProfileByJwt(jwt).get();
 	        return userService.addFavoriteProduct(user.getId(), productId);
 	    }
