@@ -30,12 +30,15 @@ import com.techverse.model.User;
 import com.techverse.repository.UserRepository;
 import com.techverse.request.LoginRequest;
 import com.techverse.response.UserSignUpResponse;
+import com.techverse.service.ProductService;
 import com.techverse.service.StorageService;
 import com.techverse.service.UserService;
 
 @RestController 
 public class HomeController {
 
+	   @Autowired
+	    private ProductService productService;
 	@Autowired
 	StorageService storageService;
 	
@@ -142,7 +145,7 @@ public class HomeController {
 	        Map<String,Object> response = new HashMap<>();
 	        
 	        List<Product> product=userService.getFavoriteProducts(user.getId());
-	    	response.put("product", product);
+	    	response.put("product", productService.setfavouriteStatus(user, product));
 			response.put("status", true);
 	        response.put("message", "product retrived Successfully");
 	        

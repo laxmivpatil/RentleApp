@@ -96,10 +96,14 @@ public class ProductController {
     }
     */
     @GetMapping("/popular")
-    public Map<String, Object> getTop15PopularProducts() {
+    public Map<String, Object> getTop15PopularProducts(@RequestHeader("Authorization") String authorizationHeader)throws UserException  {
         List<Product> topProducts = productService.getTop15PopularProducts();
+        User user=userService.findUserProfileByJwt(authorizationHeader).get();
         Map<String,Object> response = new HashMap<>();
-        response.put("product", topProducts);
+        
+        
+        
+        response.put("product", productService.setfavouriteStatus(user, topProducts));
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");
@@ -111,9 +115,10 @@ public class ProductController {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();
     	 
     	
+    	List<Product> products=productService.getAllActiveProductsOfOtherUsers(user.getId());
     	
     	Map<String,Object> response = new HashMap<>();
-        response.put("product", productService.getAllActiveProductsOfOtherUsers(user));
+        response.put("product", productService.setfavouriteStatus(user, products));
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");
@@ -130,6 +135,10 @@ public class ProductController {
             // Save recent search for the logged-in user
             saveRecentSearch(p, user);
         }
+    	if(user.getFavoriteProducts().contains(p))
+    	{
+    		p.setFavorite(true);
+    	}
         Map<String,Object> response = new HashMap<>();
         response.put("product", p);
         response.put("user", p.getUser());
@@ -162,9 +171,9 @@ public class ProductController {
     @GetMapping("/byuserid")
     public Map<String, Object> getProductsByUserId(@RequestHeader("Authorization") String authorizationHeader)  throws UserException {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();
-       
+    	List<Product> products=productService.getProductsByUserId(user.getId());
         Map<String,Object> response = new HashMap<>();
-        response.put("product", productService.getProductsByUserId(user.getId()));
+        response.put("product", productService.setfavouriteStatus(user, products) );
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");
@@ -176,9 +185,9 @@ public class ProductController {
     @GetMapping("/homeproduct")
     public Map<String, Object> getProductsforhome(@RequestHeader("Authorization") String authorizationHeader)  throws UserException {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();
-       
+    	List<Product> products=productRepository.findTop5ByActiveOrderByCreatedAtDesc(true);
         Map<String,Object> response = new HashMap<>();
-        response.put("product", productRepository.findTop5ByActiveOrderByCreatedAtDesc(true));
+        response.put("product", productService.setfavouriteStatus(user, products));
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");
@@ -188,12 +197,14 @@ public class ProductController {
         
     }
     @GetMapping("/search/{searchText}")
-    public Map<String, Object>  searchProducts(@PathVariable(required = false) String searchText) {
-    	  Map<String, Object> response = new HashMap<>();
+    public Map<String, Object>  searchProducts(@PathVariable(required = false) String searchText,@RequestHeader("Authorization") String authorizationHeader) throws UserException {
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+    	
+    	Map<String, Object> response = new HashMap<>();
     
     	  if (searchText != null && !searchText.isEmpty()) {
               List<Product> products = productService.searchByTitleOrCategory(searchText);
-              response.put("product", products);
+              response.put("product", productService.setfavouriteStatus(user, products));
               response.put("status", true);
               response.put("message", "Products retrieved successfully");
           } else {

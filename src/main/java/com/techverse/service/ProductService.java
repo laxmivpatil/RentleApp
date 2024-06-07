@@ -104,16 +104,12 @@ public class ProductService {
         return productRepository.findByUserId(userId);
     }
     
-    public List<Product> getAllActiveProductsOfOtherUsers(User user) {
-    	 Set<Long> favoriteProductIds = user.getFavoriteProducts().stream()
-                 .map(Product::getId)
-                 .collect(Collectors.toSet());
+    public List<Product> getAllActiveProductsOfOtherUsers(Long userId) {
     	 
-    	 List<Product> products = productRepository.findAllByUserIdNotAndActiveTrue(user.getId());
+    	 List<Product> products = productRepository.findAllByUserIdNotAndActiveTrue(userId);
 
     	    // Update the favorite status of the products
-    	    products.forEach(product -> product.setFavorite(favoriteProductIds.contains(product.getId())));
-
+    	    
     	    return products;
          
     }
@@ -165,5 +161,17 @@ public class ProductService {
             return true;
         }
         return false;
+    }
+    
+    
+    public List<Product> setfavouriteStatus(User user,List<Product> products)
+    {
+    	 
+    	Set<Long> favoriteProductIds = user.getFavoriteProducts().stream()
+                .map(Product::getId)
+                .collect(Collectors.toSet());
+    	products.forEach(product -> product.setFavorite(favoriteProductIds.contains(product.getId())));
+    	return products;
+
     }
 }
