@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -102,8 +104,18 @@ public class ProductService {
         return productRepository.findByUserId(userId);
     }
     
-    public List<Product> getAllActiveProductsOfOtherUsers(Long userId) {
-        return productRepository.findAllByUserIdNotAndActiveTrue(userId);
+    public List<Product> getAllActiveProductsOfOtherUsers(User user) {
+    	 Set<Long> favoriteProductIds = user.getFavoriteProducts().stream()
+                 .map(Product::getId)
+                 .collect(Collectors.toSet());
+    	 
+    	 List<Product> products = productRepository.findAllByUserIdNotAndActiveTrue(user.getId());
+
+    	    // Update the favorite status of the products
+    	    products.forEach(product -> product.setFavorite(favoriteProductIds.contains(product.getId())));
+
+    	    return products;
+         
     }
     public List<Product> getTop15PopularProducts() {
         return productRepository.findTop15PopularProducts();

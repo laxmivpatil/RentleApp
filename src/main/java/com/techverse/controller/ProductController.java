@@ -113,7 +113,7 @@ public class ProductController {
     	
     	
     	Map<String,Object> response = new HashMap<>();
-        response.put("product", productService.getAllActiveProductsOfOtherUsers(user.getId()));
+        response.put("product", productService.getAllActiveProductsOfOtherUsers(user));
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");

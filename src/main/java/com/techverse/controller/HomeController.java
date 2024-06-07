@@ -142,7 +142,7 @@ public class HomeController {
 	        Map<String,Object> response = new HashMap<>();
 	        
 	        List<Product> product=userService.getFavoriteProducts(user.getId());
-	    	response.put("favoriteProducts", product);
+	    	response.put("product", product);
 			response.put("status", true);
 	        response.put("message", "product retrived Successfully");
 	        

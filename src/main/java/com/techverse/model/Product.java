@@ -77,6 +77,18 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE) // Cascade deletion of RecentSearch if associated product is deleted
     private List<RecentSearch> recentSearches;
     
+    @Transient
+    private boolean isFavorite;
+
+    // existing getters and setters
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
 
     public LocalDateTime getCreatedAt() {
 		return createdAt;
