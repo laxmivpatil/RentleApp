@@ -113,10 +113,20 @@ public class HomeController {
 	 
 	 
 		@PostMapping("/api/user/favorite-products")
-	    public User addFavoriteProduct(@RequestHeader("Authorization") String jwt, @RequestBody Map<String, Long> request)throws UserException,ProductException {
+	    public Map<String, Object> addFavoriteProduct(@RequestHeader("Authorization") String jwt, @RequestBody Map<String, Long> request)throws UserException,ProductException {
 			 Long productId = request.get("productId");
 			User user =userService.findUserProfileByJwt(jwt).get();
-	        return userService.addFavoriteProduct(user.getId(), productId);
+			
+			userService.addFavoriteProduct(user.getId(), productId);
+			
+			Map<String,Object> response = new HashMap<>();
+	         
+	        
+	        response.put("status", true);
+	        response.put("message", "product added to wishlist successfully");
+	        return response;
+			
+	      
 	    }
 		
 		@DeleteMapping("/api/user/favorite-products")
