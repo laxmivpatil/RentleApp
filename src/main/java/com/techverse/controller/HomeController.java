@@ -138,8 +138,6 @@ public class HomeController {
 	        User user = userService.findUserProfileByJwt(jwt).get();
 	        userService.deleteFavoriteProduct(user.getId(), productId);
 	        Map<String,Object> response = new HashMap<>();
-	         
-	        
 	        response.put("status", true);
 	        response.put("message", "product delete from wishlist successfully");
 	        return response;
@@ -156,8 +154,7 @@ public class HomeController {
 			response.put("status", true);
 	        response.put("message", "product retrived Successfully");
 	        
-	        return response;
-
-	         
+	        return response; 
+        
 	    }
 }
