@@ -39,6 +39,7 @@ public class HomeController {
 
 	   @Autowired
 	    private ProductService productService;
+	   
 	@Autowired
 	StorageService storageService;
 	
