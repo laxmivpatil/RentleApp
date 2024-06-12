@@ -134,9 +134,15 @@ public class HomeController {
 	    }
 		
 		@DeleteMapping("/api/user/favorite-products")
-	    public User deleteFavoriteProduct(@RequestHeader("Authorization") String jwt,  @RequestParam Long productId) throws UserException, ProductException {
+	    public  Map<String, Object> deleteFavoriteProduct(@RequestHeader("Authorization") String jwt,  @RequestParam Long productId) throws UserException, ProductException {
 	        User user = userService.findUserProfileByJwt(jwt).get();
-	        return userService.deleteFavoriteProduct(user.getId(), productId);
+	        userService.deleteFavoriteProduct(user.getId(), productId);
+	        Map<String,Object> response = new HashMap<>();
+	         
+	        
+	        response.put("status", true);
+	        response.put("message", "product delete from wishlist successfully");
+	        return response;
 	    }
 
 	    @GetMapping("/api/user/favorite-products")
