@@ -1,5 +1,6 @@
 package com.techverse.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,12 @@ System.out.println(cartItem.getUserId());
 		}
 		
 		throw new CartItemException("cart item not found with id "+cartItemId);
+	}
+	public void clearUserCart(Long userId) {
+	    List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
+	    
+	     
+	    cartItemRepository.deleteAll(cartItems);
 	}
 
 }

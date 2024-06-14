@@ -33,6 +33,7 @@ import com.techverse.repository.OrderRepository;
 import com.techverse.repository.ShippingAddressRepository;
 import com.techverse.repository.UserRepository;
 import com.techverse.response.ApiResponse;
+import com.techverse.service.CartItemService;
 import com.techverse.service.OrderService;
 import com.techverse.service.OrderService1;
 import com.techverse.service.UserService;
@@ -49,7 +50,9 @@ public class OrderController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private CartItemService cartItemService;
 	@Autowired
 	UserRepository userRepository;
 	
@@ -319,6 +322,7 @@ System.out.println("fkdgjkhdfkjghkdfjhg");
            
            
           Order savedOrder= orderRepository.save(order);
+          cartItemService.clearUserCart(savedOrder.getUser().getId());
           
           Map<String,Object> response = new HashMap<>();
           response.put("Order", savedOrder);

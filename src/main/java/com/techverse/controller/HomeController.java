@@ -6,10 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +24,6 @@ import com.techverse.exception.UserException;
 import com.techverse.model.Product;
 import com.techverse.model.User;
 import com.techverse.repository.UserRepository;
-import com.techverse.request.LoginRequest;
-import com.techverse.response.UserSignUpResponse;
 import com.techverse.service.ProductService;
 import com.techverse.service.StorageService;
 import com.techverse.service.UserService;
@@ -120,18 +114,12 @@ public class HomeController {
 	    public Map<String, Object> addFavoriteProduct(@RequestHeader("Authorization") String jwt, @RequestBody Map<String, Long> request)throws UserException,ProductException {
 			 Long productId = request.get("productId");
 			User user =userService.findUserProfileByJwt(jwt).get();
-			
-			userService.addFavoriteProduct(user.getId(), productId);
-			
-			Map<String,Object> response = new HashMap<>();
-	         
-	        
-	        response.put("status", true);
+ 			userService.addFavoriteProduct(user.getId(), productId);
+ 			Map<String,Object> response = new HashMap<>();
+ 	        response.put("status", true);
 	        response.put("message", "product added to wishlist successfully");
 	        return response;
-			
-	      
-	    }
+ 	    }
 		
 		@DeleteMapping("/api/user/favorite-products")
 	    public  Map<String, Object> deleteFavoriteProduct(@RequestHeader("Authorization") String jwt,  @RequestParam Long productId) throws UserException, ProductException {
@@ -146,15 +134,12 @@ public class HomeController {
 	    @GetMapping("/api/user/favorite-products")
 	    public Map<String,Object> getFavoriteProducts(@RequestHeader("Authorization") String jwt) throws UserException {
 	        User user = userService.findUserProfileByJwt(jwt).get();
-	        
-	        Map<String,Object> response = new HashMap<>();
-	        
-	        List<Product> product=userService.getFavoriteProducts(user.getId());
+ 	        Map<String,Object> response = new HashMap<>();
+ 	        List<Product> product=userService.getFavoriteProducts(user.getId());
 	    	response.put("product", productService.setfavouriteStatus(user, product));
 			response.put("status", true);
 	        response.put("message", "product retrived Successfully");
-	        
-	        return response; 
+ 	        return response; 
         
 	    }
 }
