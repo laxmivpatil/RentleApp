@@ -304,7 +304,6 @@ System.out.println("fkdgjkhdfkjghkdfjhg");
         // Update order status and payment details if payment is successful
         if (paymentSuccess.equalsIgnoreCase("success")) {
            Order order= orderService.findOrderById(checkoutRequest.getOrderId());
-           
            order.getPaymentDetails().setPaymentId(checkoutRequest.getPaymentId());
            order.getPaymentDetails().setPaymentMethod(checkoutRequest.getPaymentMethod());
            order.getPaymentDetails().setRazorpayPaymentId(checkoutRequest.getRazorpayPaymentId());
