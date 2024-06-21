@@ -27,10 +27,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @Configuration
 @EnableWebSecurity
 public class AppConfig extends WebSecurityConfigurerAdapter {
-
-	
-	 @Autowired
-	    private PermitAllPathsProperties permitAllPathsProperties;
+ 
 	 
  
 	
@@ -40,7 +37,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 	            .and()
 	            .authorizeRequests(authorize -> authorize
 	                .antMatchers("/api/**").authenticated()
-	                .antMatchers(permitAllPathsProperties.getPermitAllPaths().toArray(new String[0])).permitAll() // Public APIs
+	                .antMatchers( "/auth/signup","/auth/signin","/auth/validateotp","/auth/generateotp").permitAll() // Public APIs
 	                .anyRequest().permitAll())
 	           
 	            //.addFilterBefore(new IpWhitelistFilter(), UsernamePasswordAuthenticationFilter.class) // Add IP whitelisting filter

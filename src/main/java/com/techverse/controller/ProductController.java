@@ -12,6 +12,7 @@ import com.techverse.model.Product;
 import com.techverse.model.RecentSearch;
 import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
+import com.techverse.repository.RecentSearchRepository;
 import com.techverse.service.ProductService;
 import com.techverse.service.RecentSearchService;
 import com.techverse.service.UserService;
@@ -32,6 +33,9 @@ public class ProductController {
     
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private RecentSearchRepository recentSearchRepository;
     
     @Autowired
     private RecentSearchService recentSearchService;
@@ -131,10 +135,11 @@ public class ProductController {
     	System.out.println(user.getId());
     	Product p=productService.getProductDetailsWithUser(productId);
         
-    	if (user != null && p != null) {
-            // Save recent search for the logged-in user
-            saveRecentSearch(p, user);
-        }
+    	 if (user != null && p != null) {
+              // Save recent search for the logged-in user
+              
+    		  saveOrUpdateRecentSearch(user,p);
+          }
     	if(user.getFavoriteProducts().contains(p))
     	{
     		p.setFavorite(true);
@@ -147,7 +152,9 @@ public class ProductController {
         response.put("message", "product retrived Successfully");
         return response;
     }
-    public void saveRecentSearch(Product product, User user) {
+   
+   
+  /*  public void saveRecentSearch(Product product, User user) {
         RecentSearch recentSearch = new RecentSearch();
         recentSearch.setProduct(product);
         recentSearch.setUser(user);
@@ -156,6 +163,25 @@ public class ProductController {
         manageRecentSearchCount(user, recentSearch);
 
         recentSearchService.save(recentSearch);
+    }*/
+    
+    public void saveOrUpdateRecentSearch(User user, Product product) {
+        Optional<RecentSearch> recentSearchOpt = recentSearchRepository.findByUserAndProduct(user, product);
+        RecentSearch recentSearch;
+
+    	System.out.println(LocalDateTime.now()+"  "+user.getId()+"  "+product.getId());
+        if (recentSearchOpt.isPresent()) {
+        	System.out.println(LocalDateTime.now());
+            recentSearch = recentSearchOpt.get();
+            recentSearch.setSearchTimestamp(LocalDateTime.now());
+        } else {
+            recentSearch = new RecentSearch();
+            recentSearch.setUser(user);
+            recentSearch.setProduct(product);
+            recentSearch.setSearchTimestamp(LocalDateTime.now());
+            manageRecentSearchCount(user, recentSearch);
+        }
+        recentSearchRepository.save(recentSearch);
     }
 
     private void manageRecentSearchCount(User user, RecentSearch recentSearch) {

@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties(prefix = "jwt")
-class PermitAllPathsProperties {
+ 
+public class PermitAllPathsProperties {
     private List<String> permitAllPaths;
 
 	public List<String> getPermitAllPaths() {
