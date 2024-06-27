@@ -2,6 +2,7 @@ package com.techverse.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,5 +30,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	  
 	  
 	  List<Product> findTop5ByActiveOrderByCreatedAtDesc(boolean active);
+	  
+	  
+	  List<Product> findByCategoryIn(Set<String> categories);
 	  
 }

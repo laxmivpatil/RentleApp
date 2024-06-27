@@ -7,22 +7,28 @@ import org.springframework.web.multipart.MultipartFile;
 
  
 import com.techverse.exception.UserException;
+import com.techverse.model.Cart;
+import com.techverse.model.CartItem;
 import com.techverse.model.Category;
 import com.techverse.model.Product;
 import com.techverse.model.RecentSearch;
 import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
 import com.techverse.repository.RecentSearchRepository;
+import com.techverse.service.CartService;
 import com.techverse.service.ProductService;
 import com.techverse.service.RecentSearchService;
 import com.techverse.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -30,6 +36,10 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+	private CartService cartService;
+	
     
     @Autowired
     private ProductRepository productRepository;
@@ -315,5 +325,36 @@ public class ProductController {
         
         
          
+    }
+    
+    //according to rating if cart is empty and if not get all  categories from cart and find product of particular categories
+    @GetMapping("/recommend")
+    public Map<String, Object> getrecommendProducts(@RequestHeader("Authorization") String authorizationHeader)throws UserException  {
+        List<Product> topProducts = productService.getTop15PopularProducts();
+        User user=userService.findUserProfileByJwt(authorizationHeader).get();
+        Map<String,Object> response = new HashMap<>();
+        
+        Cart cart = cartService.findUserCart(user.getId());
+        List<Product> recommendedProducts = new ArrayList<>();
+
+        if (cart != null && !cart.getCartItems().isEmpty()) {
+            // Fetch categories of items in the cart
+            Set<String> cartCategories = cart.getCartItems().stream()
+                    .map(CartItem::getProduct)
+                    .map(Product::getCategory)
+                    .collect(Collectors.toSet());
+            
+            // Retrieve products related to these categories
+            recommendedProducts = productService.searchByTitleOrCategory(authorizationHeader);
+        } else {
+            recommendedProducts = topProducts;
+        }
+
+        response.put("products", recommendedProducts);
+
+        response.put("status", true);
+        response.put("message", "product retrived Successfully");
+        return response;
+        
     }
 }

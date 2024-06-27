@@ -60,13 +60,16 @@ public class GlobalExceptionHandler {
     
      
      
-     @ExceptionHandler(Exception.class)
+   /*  @ExceptionHandler(Exception.class)
      public ResponseEntity<Object> handleBadCredentialsException( Exception ex) {
          // Create a custom error response
+    	 ex.
     	 System.out.println("hello"+ex);
          ErrorResponse errorResponse = new ErrorResponse(false, ex.getMessage());
          return new ResponseEntity<>(errorResponse, HttpStatus.OK);
      }
+     
+     */
     // Add more @ExceptionHandler methods for other custom exceptions
 
     // Generic exception handler

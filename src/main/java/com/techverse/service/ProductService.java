@@ -145,6 +145,11 @@ public class ProductService {
         return productRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(searchText, searchText);
     }
     
+    public List<Product> findProductsByCategories(Set<String> categories) {
+        // Implement the logic to find products by categories
+        return productRepository.findByCategoryIn(categories);
+    }
+    
     public boolean deleteProduct(Long id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
