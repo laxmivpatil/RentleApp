@@ -350,7 +350,7 @@ public class ProductController {
             recommendedProducts = topProducts;
         }
 
-        response.put("products", recommendedProducts);
+        response.put("product", recommendedProducts);
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");
