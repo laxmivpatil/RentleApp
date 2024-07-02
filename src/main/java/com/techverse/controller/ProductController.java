@@ -234,6 +234,22 @@ public class ProductController {
         
         
     }
+    @GetMapping("/bycategory")
+    public Map<String, Object> getProductsbycategory(@RequestHeader("Authorization") String authorizationHeader,@RequestParam String categoryId)  throws UserException {
+    	User user=userService.findUserProfileByJwt(authorizationHeader).get();
+    	Category category=categoryService.getCategoryById(Long.valueOf(categoryId));
+    	List<Product> products=productRepository.findAllByUserIdNotAndActiveTrueAndCategory(user.getId(), category.getName());
+    	   Map<String,Object> response = new HashMap<>();
+    	     
+        response.put("product", products);
+
+        response.put("status", true);
+        response.put("message", "products retrived Successfully");
+        return response;
+        
+        
+        
+    }
     @GetMapping("/search/{searchText}")
     public Map<String, Object>  searchProducts(@PathVariable(required = false) String searchText,@RequestHeader("Authorization") String authorizationHeader) throws UserException {
     	User user=userService.findUserProfileByJwt(authorizationHeader).get();
