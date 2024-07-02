@@ -16,6 +16,7 @@ import com.techverse.model.User;
 import com.techverse.repository.ProductRepository;
 import com.techverse.repository.RecentSearchRepository;
 import com.techverse.service.CartService;
+import com.techverse.service.CategoryService;
 import com.techverse.service.ProductService;
 import com.techverse.service.RecentSearchService;
 import com.techverse.service.UserService;
@@ -39,7 +40,8 @@ public class ProductController {
     
     @Autowired
 	private CartService cartService;
-	
+    @Autowired
+    private CategoryService categoryService;
     
     @Autowired
     private ProductRepository productRepository;
@@ -356,5 +358,25 @@ public class ProductController {
         response.put("message", "product retrived Successfully");
         return response;
         
+    }
+    
+    
+    /*****Main logic is pending******/
+    @GetMapping("/trending")
+    public Map<String, Object> getAllTrending() {
+        List<Category> categories = categoryService.getAllCategories();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("categories", categories.stream()
+                .map(category -> {
+                    Map<String, Object> categoryMap = new HashMap<>();
+                    categoryMap.put("id", category.getId());
+                    categoryMap.put("name", category.getName());
+                    categoryMap.put("image", category.getImage());
+                    return categoryMap;
+                })
+                .collect(Collectors.toList()));
+
+        return response;
     }
 }
