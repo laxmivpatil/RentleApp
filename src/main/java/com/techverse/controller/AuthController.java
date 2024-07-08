@@ -79,6 +79,9 @@ public class AuthController {
 		
 		Optional<User> isEmailExist=userRepository.findByEmailu(email);
 		Optional<User> isphoneExist=userRepository.findByPhoneNumber(phoneNumber);
+		if(isEmailExist.isPresent() && isphoneExist.isPresent()) {
+			throw new UserException("Email and phone number Allready Registered with Another Account");
+		}
 		if(isEmailExist.isPresent() ) {
 			throw new UserException("Email is Allready Registered with Another Account");
 		}

@@ -106,8 +106,8 @@ public class ProductService {
     
     public List<Product> getAllActiveProductsOfOtherUsers(Long userId) {
     	 
-    	 List<Product> products = productRepository.findAllByUserIdNotAndActiveTrue(userId);
-
+    	// List<Product> products = productRepository.findAllByUserIdNotAndActiveTrue(userId);
+    	 List<Product> products = productRepository.findAllByActiveTrue();
     	    // Update the favorite status of the products
     	    
     	    return products;
