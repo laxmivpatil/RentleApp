@@ -79,8 +79,11 @@ public class AuthController {
 		
 		Optional<User> isEmailExist=userRepository.findByEmailu(email);
 		Optional<User> isphoneExist=userRepository.findByPhoneNumber(phoneNumber);
-		if(isEmailExist.isPresent()||isphoneExist.isPresent()) {
-			throw new UserException("Email or phone is Allready Used with Another Account");
+		if(isEmailExist.isPresent() ) {
+			throw new UserException("Email is Allready Registered with Another Account");
+		}
+		if(isphoneExist.isPresent()) {
+			throw new UserException("Phone Number is Allready Registered with Another Account");
 		}
 		ApiResponse response=new ApiResponse();
 		 String otp=otpService.generateOtpAll(email);
