@@ -157,7 +157,7 @@ public class ProductController {
     		p.setFavorite(true);
     	}
         Map<String,Object> response = new HashMap<>();
-        response.put("product", p);
+        response.put("product", productService.setfavouriteStatussingleproduct(user, p));
         response.put("user", p.getUser());
 
         response.put("status", true);
@@ -241,7 +241,7 @@ public class ProductController {
     	List<Product> products=productRepository.findAllByUserIdNotAndActiveTrueAndCategory(user.getId(), category.getName());
     	   Map<String,Object> response = new HashMap<>();
     	     
-        response.put("product", products);
+        response.put("product", productService.setfavouriteStatus(user, products));
 
         response.put("status", true);
         response.put("message", "products retrived Successfully");
@@ -332,17 +332,8 @@ public class ProductController {
     	        response.put("message", "Product not found");
     	         
     	    }
-    	
-    	
-    	
     	System.out.println(user.getEmail());
-    	 
-        
         return response;
-        
-        
-        
-         
     }
     
     //according to rating if cart is empty and if not get all  categories from cart and find product of particular categories
@@ -368,7 +359,7 @@ public class ProductController {
             recommendedProducts = topProducts;
         }
 
-        response.put("product", recommendedProducts);
+        response.put("product", productService.setfavouriteStatus(user, recommendedProducts));
 
         response.put("status", true);
         response.put("message", "product retrived Successfully");

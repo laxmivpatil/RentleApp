@@ -109,7 +109,6 @@ public class ProductService {
     	// List<Product> products = productRepository.findAllByUserIdNotAndActiveTrue(userId);
     	 List<Product> products = productRepository.findAllByActiveTrue();
     	    // Update the favorite status of the products
-    	    
     	    return products;
          
     }
@@ -179,4 +178,15 @@ public class ProductService {
     	return products;
 
     }
+    
+    public Product setfavouriteStatussingleproduct(User user,Product p)
+    {
+    	if( user.getFavoriteProducts().contains(p))
+    	{
+    		p.setFavorite(true);
+    	}
+    	return p;
+    }
+    
+    
 }

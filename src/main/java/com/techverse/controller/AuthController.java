@@ -60,11 +60,6 @@ public class AuthController {
 	
 	@Autowired
 	private OtpService otpService;
-	
-	
-	
-	 
-
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> createUserHandler( @RequestPart("fullName") String fullName,
