@@ -368,6 +368,41 @@ public class ProductController {
     }
     
     
+    
+    @GetMapping("/like")
+    public Map<String, Object> getlikeUser(@RequestHeader("Authorization") String authorizationHeader) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            User user = userService.findUserProfileByJwt(authorizationHeader).orElseThrow(() -> new UserException("User not found"));
+            
+            // Fetch recent searches by user
+            List<RecentSearch> recentSearches = recentSearchService.findRecentSearchesByUser(user);
+            List<Product> recentProducts = recentSearches.stream()
+                                                         .map(RecentSearch::getProduct)
+                                                         .collect(Collectors.toList());
+
+            // Fetch products in the same category as the recent search products
+            List<Product> similarProducts = productService.getProductsInSameCategory(recentProducts);
+
+            // Prepare the response
+        //    response.put("recentProducts", recentProducts);
+            response.put("product", similarProducts);
+            response.put("status", true);
+            response.put("message", "you may like products retrieved successfully");
+
+            return response;
+        } catch (UserException e) {
+            response.put("status", false);
+            response.put("message", "Token error: " + e.getMessage());
+            return response;
+        } catch (Exception e) {
+            response.put("status", false);
+            response.put("message", "Internal server error: " + e.getMessage());
+            return response;
+        }
+    }
+    
     /*****Main logic is pending******/
     @GetMapping("/trending")
     public Map<String, Object> getAllTrending() {

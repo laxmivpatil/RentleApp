@@ -11,6 +11,7 @@ import com.techverse.repository.ProductRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -186,6 +187,31 @@ public class ProductService {
     		p.setFavorite(true);
     	}
     	return p;
+    }
+    
+    public List<Product> getProductsInSameCategory(List<Product> products) {
+        if (products.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Get unique categories from the recent search products
+        Set<String> categories = products.stream()
+                                         .map(Product::getCategory)
+                                         .collect(Collectors.toSet());
+
+        // Get product IDs to exclude them from the search
+        List<Long> productIds = products.stream()
+                                        .map(Product::getId)
+                                        .collect(Collectors.toList());
+
+        List<Product> similarProducts = new ArrayList<>();
+
+        // Find products in the same categories, excluding the recent search products
+        for (String category : categories) {
+            similarProducts.addAll(productRepository.findByCategoryAndIdNotIn(category, productIds));
+        }
+
+        return similarProducts;
     }
     
     

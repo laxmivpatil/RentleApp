@@ -36,4 +36,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	  
 	  
 	  List<Product> findAllByUserIdNotAndActiveTrueAndCategory(Long userId,String category);
+	  
+	  List<Product> findByCategoryAndIdNotIn(String category, List<Long> ids);
 }
